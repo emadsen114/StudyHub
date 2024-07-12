@@ -4,13 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rich Text Editor</title>
-
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <!-- Stylesheet-->
     <link rel="stylesheet" type="text/css" href="/css/rte_style.css"    />
 </head>
 <body>
-    <h1>Rich Text Editor Page</h1>
-    <p>This page will have a rich text editor that will be used for</p>
-    <p>the user create post feature.</p>
-</body>
+    <h1>Rich Text Editor</h1>
+    <p>Rich Text Editor used for the Create Post feature.</p>
+    <div class="container">
+        <div class="options">
+            <!-- Undo/Redo -->
+            <button id="undo" class="option-button">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <button id="redo" class="option-button">
+                <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <!--Font -->
+            <select id="font" class="adv-option-button"></select>
+            <select id="fontSize" class="adv-option-button"></select>
+            <!-- Text Format -->
+            <button id="bold" class="option-button format">
+                <i class="fa-solid fa-bold"></i>
+            </button>
+            <button id="italic" class="option-button format">
+                <i class="fa-solid fa-italic"></i>
+            </button>
+            <button id="underline" class="option-button format">
+                <i class="fa-solid fa-underline"></i>
+            </button>
+            <button id="strikethrough" class="option-button format">
+                <i class="fa-solid fa-strikethrough"></i>
+            </button>
+        </div>
+        <div id="text-input" contenteditable="true"></div>
+    </div>
 </html>
