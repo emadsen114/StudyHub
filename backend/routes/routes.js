@@ -24,35 +24,35 @@ router.post('/post', async (req, res) => {
     }
     catch (error) {
         // Send the error message to the client
-        res.status(400).json({ message: error.message })
+        res.status(400).json({message: error.message})
     }
 })
 
 //Get all Method
 router.get('/getAll', async (req, res) => {
-    try {
+    try{
         // Find all the data in the database
         const data = await Model.find();
         // Send the data to the client in JSON format
         res.json(data)
     }
-    catch (error) {
+    catch(error){
         // Send the error message to the client
-        res.status(500).json({ message: error.message })
+        res.status(500).json({message: error.message})
     }
 })
 
 //Get by ID Method
 router.get('/getOne/:id', async (req, res) => {
-    try {
+    try{
         // Find the data by ID in the database
         const data = await Model.findById(req.params.id);
         // Send the data to the client in JSON format
         res.json(data)
     }
-    catch (error) {
+    catch(error){
         // Send the error message to the client
-        res.status(500).json({ message: error.message })
+        res.status(500).json({message: error.message})
     }
 })
 
