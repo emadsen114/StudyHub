@@ -3,12 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-image: url('public/images/library.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .header-text {
+            padding-top: 100px;
+            font-size: 50px;
+            color: whitesmoke;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: right;
+            margin-right: 20px; 
+        }
+
+        .link-container {
+            text-align: right; 
+            margin-right: 20px; 
+            padding-top: 20px;
+        }
+
+        .link-button {
+            text-decoration: none;
+            color: whitesmoke;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+    </style>
     <title>Landing Page</title>
 </head>
 <body>
-    <img
-    class = "fit picture"
-    src = "/images/library.jpg"
-    alt = "bust statue in a library"/>
+    <div class="link-container">
+        <a href="aboutPage.html" class="link-button">About</a>
+        <a href="signUpPage.html" class="link-button">Sign Up</a>
+        <a href="logInPage.html" class="link-button">Log In</a>
+
+    </div>
+    <div class="header-text">UNLOCK A WORLD OF KNOWLEDGE WITH STUDYHUB</div>
+   
 </body>
 </html>
