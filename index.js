@@ -74,4 +74,17 @@ app.get('/rte.html', (request, response) => {
     });
 });
 
+
+
+app.get('/aboutPage.html', (request, response) => {
+    readFile(path.join(__dirname, 'frontend', 'views', 'aboutPage.html'), 'utf8', (err, html) => {
+        if (err) {
+            console.error('Error reading aboutPage.html:', err);
+            response.status(500).send('Sorry, something went wrong!');
+            return;
+        }
+        response.send(html);
+    });
+});
+
 console.log('App available on http://localhost:3000');
