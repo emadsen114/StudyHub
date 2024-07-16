@@ -9,11 +9,48 @@ body {
 }
 
 .container {
+  background-color: white;
+  width: 60vmin;
+  height: 90vmin;
+  padding: 50px 30px;
+  position: absolute;
+  transform: translate(-90%, -50%);
+  left: 35%;
+  top: 50%;
+  border-radius: 10px;
+  box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
+}
+
+.left-panel {
+    gap: 15px;
+    width: 100%;
+}
+
+.left-panel input {
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+textarea[name="description"] {
+  height: 100px;
+  width: 90%;
+  resize: none;
+}
+
+#next {
+  margin-top: 80px;
+  margin-left: auto;
+  width: 40%;
+  display: block;
+
+}
+
+.container2 {
     background-color: #ffffff;
     width: 90vmin;
     padding: 50px 30px;
     position: absolute;
-    transform: translate(-50%, -50%);
+    transform: translate(-10%, -50%);
     left: 50%;
     top: 50%;
     border-radius: 10px;
@@ -29,20 +66,20 @@ body {
 button {
     height: 28px;
     width: 28px;
+    
 }
-
-select {
-    height: 28px;
-    width: 28px;
-    padding: 7px;
-    border: 1px solid #020929;
-    border-radius: 3px;
-  }
-
 
 #text-input {
     margin-top: 10px;
     border: 1px solid #ccc;
     padding: 20px;
     height: 50vh;
+}
+
+#save {
+  margin-top: 10px;
+  margin-left: auto;
+  width: 20%;
+  display: block;
+
 }
