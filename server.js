@@ -1,6 +1,6 @@
 require('dotenv').config();
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth } = require("./middleware/auth.js");
+const { adminAuth, userAuth } = require("./backend/middleware/auth.js");
 
 const express = require('express');
 const app = express();
@@ -56,7 +56,7 @@ app.use(cookieParser());
 
 app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
 app.get("/basic", userAuth, (req, res) => res.send("User Route"));
-app.get("/", (req, res) => res.render("home"))
+//app.get("/", (req, res) => res.render("home"))
 app.get("/register", (req, res) => res.render("register"))
 app.get("/login", (req, res) => res.render("login"))
 app.get("/admin", adminAuth, (req, res) => res.render("admin"))
@@ -127,6 +127,7 @@ app.get('/aboutPage.html', (request, response) => {
         response.send(html);
     });
 });
+
 
 console.log('App available on http://localhost:3000');
 
