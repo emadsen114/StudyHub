@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rich Text Editor</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <!-- Stylesheet-->
+    <link rel="stylesheet" type="text/css" href="/css/rte_style.css"    />
+</head>
+<body>
+    <!-- Used this to make the basis of the rich text editor: -->
+    <!-- https://www.youtube.com/watch?v=la-0HOaNL10&t=72s&ab_channel=CodingArtist -->
+    <div class="container">
+        <a href="uploadExisting.html">Upload Existing File</a>
+        <br> <!-- Line break -->
+        <h1>Create New Post</h1>
+        <p>Rich Text Editor used for the Create Post feature.</p>
+        <hr>
+        <br> <!-- Line break -->
+        <div class="left-panel">
+            <form>
+                <label for="title">Title</label>
+                <br> <!-- Line break -->
+                <input type="text" id="title" name="title" placeholder="Enter title">
+                <br> <!-- Line break -->
+                <label for="description">Description</label>
+                <br> <!-- Line break -->
+                <textarea id="description" name="description" placeholder="Enter description"></textarea>
+                <br> <!-- Line break -->
+                <label for="tags">Tags</label>
+                <br> <!-- Line break -->
+                <input type="text" id="tags" name="tags" placeholder="Enter tags">
+            </form>
+            <button id="next">Next</button>
+        </div>
+    </div>
+    <div class="container2">
+        <div class="options">
+            <!-- Undo/Redo -->
+            <button id="undo" class="option-button">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <button id="redo" class="option-button">
+                <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <!--Font -->
+            <select id="fontName" class="adv-option-button"></select>
+            <select id="fontSize" class="adv-option-button"></select>
+            <!-- Text Format -->
+            <button id="bold" class="option-button format">
+                <i class="fa-solid fa-bold"></i>
+            </button>
+            <button id="italic" class="option-button format">
+                <i class="fa-solid fa-italic"></i>
+            </button>
+            <button id="underline" class="option-button format">
+                <i class="fa-solid fa-underline"></i>
+            </button>
+            <!-- Alignment -->
+            <button id="justifyLeft" class="option-button align">
+                <i class="fa-solid fa-align-left"></i>
+            </button>
+            <button id="justifyCenter" class="option-button align">
+                <i class="fa-solid fa-align-center"></i>
+            </button>
+            <button id="justifyRight" class="option-button align">
+                <i class="fa-solid fa-align-right"></i>
+            </button>
+            <button id="justifyFull" class="option-button align">
+                <i class="fa-solid fa-align-justify"></i>
+            </button>
+            <button id="indent" class="option-button spacing">
+                <i class="fa-solid fa-indent"></i>
+            </button>
+            <button id="outdent" class="option-button spacing">
+                <i class="fa-solid fa-outdent"></i>
+            </button>
+        </div>
+        <div id="text-input" contenteditable="true"></div>
+        <button id="save">Save</button>
+    </div>
+    <script src="/scripts/rte_script.js"></script>
+</body>
+</html>

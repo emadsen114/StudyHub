@@ -1,0 +1,55 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+body {
+    background-color:lightblue;
+}
+
+.container {
+    background-color: white;
+    width: 120vmin;
+    height: 90vmin;
+    padding: 50px 30px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
+  }
+
+.panel textarea {
+    width: 90%;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+#content {
+    height: 100px;
+  }
+
+#description {
+    height: 150px;
+
+}
+button {
+    height: 28px;
+    width: 20%; 
+}
+
+#button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#back {
+    margin-right: auto;
+}
+
+#submit {
+    margin-left: auto;
+}
