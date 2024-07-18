@@ -1,6 +1,6 @@
 body {
-    background-color: whitesmoke;
-    color: #2B303A;
+    background-color: #2B303A;
+    color: whitesmoke;
     text-align: right;
     font-size: 15px;
     margin: 0;
@@ -8,7 +8,7 @@ body {
 
 .link-button {
     text-decoration: none;
-    color: #2B303A;
+    color: whitesmoke;
     cursor: pointer;
     padding: 10px;
 }
@@ -19,7 +19,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: #2B303A;
+    background: #6F9283;
     color: whitesmoke;
     font-size: 30px;
 }
@@ -32,7 +32,7 @@ h1 {
 
 h2{
     text-align: center;
-    color: #2B303A;
+    color: whitesmoke;
     padding-left: 15%;
     padding-right: 15%;
 }
