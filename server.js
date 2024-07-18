@@ -1,10 +1,19 @@
 require('dotenv').config();
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth } = require("./middleware/auth.js");
+const { adminAuth, userAuth } = require("./backend/middleware/auth.js");
 
 const express = require('express');
 const app = express();
 const PORT = 3000
+const path = require('path');
+
+// Set the view engine to ejs
+app.set('view engine', 'ejs');
+
+// Set the views directory
+app.set('views', path.join(__dirname, 'frontend/views'));
+
+// Your routes and other middleware
 
 // server listening 
 app.listen(PORT, () => {
@@ -15,8 +24,6 @@ const connectDB = require("./backend/config/database");
 
 //Connecting the Database
 connectDB();
-
-app.set("view engine", "ejs")
 
 /*
 const server = app.listen(PORT, () =>
@@ -32,7 +39,6 @@ const server = app.listen(PORT, () =>
 
 const mongoose = require('mongoose');
 const { readFile } = require('fs');
-const path = require('path');
 const mongoString = process.env.DATABASE_URL;
 
 mongoose.connect(mongoString);
@@ -56,11 +62,16 @@ app.use(cookieParser());
 
 app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
 app.get("/basic", userAuth, (req, res) => res.send("User Route"));
-app.get("/", (req, res) => res.render("home"))
+//app.get("/", (req, res) => res.render("home"))
 app.get("/register", (req, res) => res.render("register"))
 app.get("/login", (req, res) => res.render("login"))
 app.get("/admin", adminAuth, (req, res) => res.render("admin"))
 app.get("/basic", userAuth, (req, res) => res.render("user"))
+
+app.get("/logout", (req, res) => {
+    res.cookie("jwt", "", { maxAge: "1" })
+    res.redirect("/")
+  })
 
 /*
 app.listen(3000, () => {
@@ -127,6 +138,7 @@ app.get('/aboutPage.html', (request, response) => {
         response.send(html);
     });
 });
+
 
 console.log('App available on http://localhost:3000');
 
