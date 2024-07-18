@@ -66,6 +66,8 @@ body {
 
 .right-panel label {
     margin-bottom: 5px;
+    color: #2c2c2c;
+
 }
 
 .right-panel input {
@@ -86,6 +88,7 @@ body {
 .right-panel p {
     margin: 10px 0;
     font-size: 12px;
+    color: #f0f0f0;
 }
 
 .right-panel a {
@@ -100,4 +103,3 @@ body {
 .right-panel button {
     width: 100%;
 }
-
