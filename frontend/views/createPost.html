@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="/css/rte_style.css"    />
 </head>
 <body>
+    <div class="link-button">
+        <a href="/" class="link-button">Landing Page</a>
+        <a href="register" class="link-button">Sign Up</a>
+        <a href="login" class="link-button">Log In</a>
+    </div>
     <!-- Used this to make the basis of the rich text editor: -->
     <!-- https://www.youtube.com/watch?v=la-0HOaNL10&t=72s&ab_channel=CodingArtist -->
     <div class="container">
@@ -34,6 +39,7 @@
                 <input type="text" id="tags" name="tags" placeholder="Enter tags">
             </form>
             <button id="next">Next</button>
+            <button id="clear">Start Over?</button>
         </div>
     </div>
     <div class="container2">
@@ -81,6 +87,6 @@
         <div id="text-input" contenteditable="true"></div>
         <button id="save">Save</button>
     </div>
-    <script src="/scripts/rte_script.js"></script>
+    <script src="/scripts/createPost_script.js"></script>
 </body>
 </html>

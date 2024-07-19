@@ -78,13 +78,69 @@ window.onload = initializer();
 // this function is used to print the selected text into the console
 document.querySelector("#save").addEventListener('click', function() {
     let textBox = document.querySelector("#text-input");
-    let htmlContent = textBox.innerHTML;
+    let titleBox = document.querySelector("#title");
+    let descriptionBox = document.querySelector("#description");
+
+    let textContent = textBox.innerHTML;
+    let titleContent = titleBox.value;
+    let descriptionContent = descriptionBox.value;
   
-    console.log("HTML content of the text box: " + htmlContent);
+    console.log("HTML content of the text box: " + textContent);
+    //console.log(typeof textContent);
+    console.log("Title: " + titleContent);
+    //console.log(typeof titleContent);
+    console.log("Description: " + descriptionContent);
+    //console.log(typeof descriptionContent);
+
   });
 
 
   // this function is used to redirect the user to the previewPost page
 document.querySelector("#next").addEventListener('click', function() {
+    //let textBox = document.querySelector("#text-input");
+    //let content = document.getElementById("text-input").innerHTML; // new
+    let titleBox = document.querySelector("#title");
+    let descriptionBox = document.querySelector("#description");
+
+    //let textContent = textBox.innerHTML ? textBox.innerHTML : "";
+    //console.log(textContent)
+    let titleContent = titleBox.value;
+    let descriptionContent = descriptionBox.value;
+
+    // save the contents to localStorage
+    //localStorage.setItem('text', textContent);
+    //localStorage.setItem('text', content); // new
+    localStorage.setItem('title', titleContent);
+    localStorage.setItem('description', descriptionContent);
+
+    //console.log(localStorage.getItem('text'));
+    //console.log(localStorage.getItem('title'));
+    //console.log(localStorage.getItem('description'));
     window.location.href = "previewPost.html";
 });
+
+// this function is used to clear all entries from the textboxes (clears local storage)
+document.querySelector("#clear").addEventListener('click', function() {
+    // Opens up a popup asking to confirm clear
+    if (confirm('Are you sure you want to clear all fields? This cannot be undone.')) {
+        localStorage.removeItem('text');
+        localStorage.removeItem('title');
+        localStorage.removeItem('description');
+        document.querySelector("#text-input").value = "";
+        document.querySelector("#title").value = "";
+        document.querySelector("#description").value = "";
+    }
+});
+
+window.onload = function() {
+    // get the saved contents from localStorage
+    //let textContent = localStorage.getItem('content'); //new
+    let titleContent = localStorage.getItem('title');
+    let descriptionContent = localStorage.getItem('description');
+  
+    // set the values of the text boxes
+    //document.querySelector("#text-input").value = textContent;
+    //document.getElementById('content').value = textContent; //new
+    document.querySelector("#title").value = titleContent;
+    document.querySelector("#description").value = descriptionContent;
+  };
