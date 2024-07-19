@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "Basic",
     required: true,
-  },
+  }
 })
 
 const User = mongoose.model('User', UserSchema)

@@ -4,9 +4,19 @@
     box-sizing: border-box;
   }
 
-body {
-    background-color:lightblue;
-}
+  body {
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(
+      to right, 
+      #2B303A 0%,
+      #2B303A 42%,
+      #E8EDEC 42%,
+      #E8EDEC 100%
+    );
+    background-repeat: no-repeat;
+  }
+
 
 .container {
   background-color: white;
@@ -79,6 +89,22 @@ button {
 #save {
   margin-top: 10px;
   margin-left: auto;
+  width: 20%;
+  display: block;
+
+}
+
+.link-button {
+  text-decoration: none;
+  cursor: pointer;
+  padding: 10px;
+  text-align: right;
+  color: #2B303A;
+}
+
+#clear {
+  margin-top: 10px;
+  margin-right: auto;
   width: 20%;
   display: block;
 
