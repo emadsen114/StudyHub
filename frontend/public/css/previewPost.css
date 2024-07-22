@@ -27,8 +27,14 @@ body {
     margin-bottom: 10px;
 }
 
+
 #content {
     height: 100px;
+    width: 90%;
+    resize: none;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    overflow: auto;
   }
 
 #description {
