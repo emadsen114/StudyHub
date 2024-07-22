@@ -6,10 +6,6 @@ let optionsButtons = document.querySelectorAll(".option-button");
 let advancedOptionButton = document.querySelectorAll(".adv-option-button");
 let fontName = document.getElementById("fontName");
 let fontSizeRef = document.getElementById("fontSize");
-let writingArea = document.getElementById("text-input");
-let alignButtons = document.querySelectorAll(".align");
-let spacingButtons = document.querySelectorAll(".spacing");
-let formatButtons = document.querySelectorAll(".format");
 
 
 //List of CSS Web Safe Fonts
@@ -97,25 +93,22 @@ document.querySelector("#save").addEventListener('click', function() {
 
   // this function is used to redirect the user to the previewPost page
 document.querySelector("#next").addEventListener('click', function() {
-    //let textBox = document.querySelector("#text-input");
-    //let content = document.getElementById("text-input").innerHTML; // new
+    let contentBox = document.querySelector("#text-input");
     let titleBox = document.querySelector("#title");
     let descriptionBox = document.querySelector("#description");
 
-    //let textContent = textBox.innerHTML ? textBox.innerHTML : "";
-    //console.log(textContent)
+    let content = contentBox.innerHTML;
     let titleContent = titleBox.value;
     let descriptionContent = descriptionBox.value;
 
     // save the contents to localStorage
-    //localStorage.setItem('text', textContent);
-    //localStorage.setItem('text', content); // new
+    localStorage.setItem('content', content);
     localStorage.setItem('title', titleContent);
     localStorage.setItem('description', descriptionContent);
 
-    //console.log(localStorage.getItem('text'));
-    //console.log(localStorage.getItem('title'));
-    //console.log(localStorage.getItem('description'));
+    console.log(localStorage.getItem('content'));
+    console.log(localStorage.getItem('title'));
+    console.log(localStorage.getItem('description'));
     window.location.href = "previewPost.html";
 });
 
@@ -123,24 +116,75 @@ document.querySelector("#next").addEventListener('click', function() {
 document.querySelector("#clear").addEventListener('click', function() {
     // Opens up a popup asking to confirm clear
     if (confirm('Are you sure you want to clear all fields? This cannot be undone.')) {
+        localStorage.removeItem('content');
         localStorage.removeItem('text');
         localStorage.removeItem('title');
         localStorage.removeItem('description');
-        document.querySelector("#text-input").value = "";
+        document.querySelector("#content").value = "";
         document.querySelector("#title").value = "";
         document.querySelector("#description").value = "";
+
+        // temp solution as clear doesn't work immediately
+        // only clears after page is manually refreshed by user,
+        // but it is supposed to automatically clear after confirm clear
+        //window.location.reload();
     }
 });
 
+
+// Used this to create the basis of the tagging system
+// https://www.youtube.com/watch?v=qYRiB8c6gLQ&ab_channel=UzoanyaDominic
+const button = document.querySelector('#add-button');
+const tagInput = document.querySelector('#input');
+
+const form = document.forms[0];
+const tagContainer = document.querySelector('.tag-container');
+const tags = [];
+
+const createTag = (tagValue) => {
+    const value = tagValue.trim();
+
+    if (value === '' || tags.includes(value)) return;
+
+    const tag = document.createElement('span');
+    const tagContent = document.createTextNode(value);
+    tag.setAttribute('class', 'tag');
+    tag.appendChild(tagContent);
+
+    const close = document.createElement('span');
+    close.setAttribute('class', 'remove');
+    close.innerHTML = '&#10006;';
+    close.onclick = handleRemoveTag;
+
+    tag.appendChild(close);
+    tagContainer.appendChild(tag);
+    tags.push(tag);
+
+    tagInput.value = '';
+    tagInput.focus();
+};
+
+const handleFormSubmit = (e) => {
+    e.preventDefault();
+    createTag(tagInput.value);
+}
+
+const handleRemoveTag = (e) => {
+    const item = e.target.textContent;
+    e.target.parentElement.remove();
+    tags.splice(tags.indexOf(item), 1);
+}
+
+form.addEventListener('submit', handleFormSubmit);
+
 window.onload = function() {
     // get the saved contents from localStorage
-    //let textContent = localStorage.getItem('content'); //new
+    let textContent = localStorage.getItem('content');
     let titleContent = localStorage.getItem('title');
     let descriptionContent = localStorage.getItem('description');
   
     // set the values of the text boxes
-    //document.querySelector("#text-input").value = textContent;
-    //document.getElementById('content').value = textContent; //new
+    document.querySelector("#text-input").innerHTML = textContent;
     document.querySelector("#title").value = titleContent;
     document.querySelector("#description").value = descriptionContent;
   };
