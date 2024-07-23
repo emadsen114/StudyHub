@@ -7,6 +7,38 @@ const app = express();
 const PORT = 3000
 const path = require('path');
 
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+mongoose.connect('mongodb+srv://studyhubsose:team25SOSE@studyhub.3lizww3.mongodb.net/?retryWrites=true&w=majority&appName=StudyHub', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch(err => console.error('Could not connect to MongoDB...', err));
+  
+//modify the route to display posts
+const Post = require('./path/to/postModel');
+
+app.get('/homePage.html', async (request, response) => {
+  try {
+    const posts = await Post.find().sort({ createdAt: -1 });
+    response.render('homePage', { posts }); // Assuming you're using EJS
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    response.status(500).send('Sorry, something went wrong!');
+  }
+});
+
+//route handles post submissions
+app.post('/submit-post', async (request, response) => {
+    try {
+      const newPost = new Post(request.body); // Assuming body-parser middleware is used
+      await newPost.save();
+      response.redirect('/homePage.html');
+    } catch (err) {
+      console.error('Error saving post:', err);
+      response.status(500).send('Sorry, something went wrong!');
+    }
+  });
+
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 
@@ -14,6 +46,17 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend/views'));
 
 // Your routes and other middleware
+app.get('/homePage.html', (request, response) => {
+    readFile(path.join(__dirname, 'frontend', 'views', 'homePage.html'), 'utf8', (err, html) => {
+        if (err) {
+            console.error('Error reading homePage.html:', err);
+            response.status(500).send('Sorry, something went wrong!');
+            return;
+        }
+        response.send(html);
+    });
+});
+
 
 // server listening 
 app.listen(PORT, () => {
@@ -72,6 +115,8 @@ app.get("/logout", (req, res) => {
     res.cookie("jwt", "", { maxAge: "1" })
     res.redirect("/")
   })
+
+  
 
 /*
 app.listen(3000, () => {
