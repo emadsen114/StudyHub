@@ -87,6 +87,7 @@ document.querySelector("#save").addEventListener('click', function() {
     //console.log(typeof titleContent);
     console.log("Description: " + descriptionContent);
     //console.log(typeof descriptionContent);
+    console.log("Tags: " + JSON.stringify(tags.map(tag => tag.textContent)));
 
   });
 
@@ -105,10 +106,11 @@ document.querySelector("#next").addEventListener('click', function() {
     localStorage.setItem('content', content);
     localStorage.setItem('title', titleContent);
     localStorage.setItem('description', descriptionContent);
+    localStorage.setItem('tag', JSON.stringify(tags.map(tag => tag.textContent)));
 
-    console.log(localStorage.getItem('content'));
-    console.log(localStorage.getItem('title'));
-    console.log(localStorage.getItem('description'));
+    //console.log(localStorage.getItem('content'));
+    //console.log(localStorage.getItem('title'));
+    //console.log(localStorage.getItem('description'));
     window.location.href = "previewPost.html";
 });
 
@@ -116,11 +118,12 @@ document.querySelector("#next").addEventListener('click', function() {
 document.querySelector("#clear").addEventListener('click', function() {
     // Opens up a popup asking to confirm clear
     if (confirm('Are you sure you want to clear all fields? This cannot be undone.')) {
+        clearTags();
         localStorage.removeItem('content');
         localStorage.removeItem('text');
         localStorage.removeItem('title');
         localStorage.removeItem('description');
-        document.querySelector("#content").value = "";
+        document.querySelector("#content").value = ""; // This causes an error TypeError, but still works after refresh
         document.querySelector("#title").value = "";
         document.querySelector("#description").value = "";
 
@@ -151,8 +154,10 @@ const createTag = (tagValue) => {
     tag.setAttribute('class', 'tag');
     tag.appendChild(tagContent);
 
+    //tag.setAttribute('class', 'remove');
+    //tag.onclick = handleRemoveTag;
     const close = document.createElement('span');
-    close.setAttribute('class', 'remove');
+    close.setAttribute('class', 'remove-tag');
     close.innerHTML = '&#10006;';
     close.onclick = handleRemoveTag;
 
@@ -167,12 +172,20 @@ const createTag = (tagValue) => {
 const handleFormSubmit = (e) => {
     e.preventDefault();
     createTag(tagInput.value);
+    //localStorage.setItem('tag', JSON.stringify(tags.map(tag => tag.value)));
 }
 
 const handleRemoveTag = (e) => {
     const item = e.target.textContent;
     e.target.parentElement.remove();
     tags.splice(tags.indexOf(item), 1);
+}
+
+function clearTags() {
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => tag.querySelector('.remove-tag').click()); // Iterates through all tags and clicks the remove button
+    tags.length = 0; // Clear the tags array
+    localStorage.removeItem('tag'); // Clear the tags from localStorage
 }
 
 form.addEventListener('submit', handleFormSubmit);
@@ -182,9 +195,18 @@ window.onload = function() {
     let textContent = localStorage.getItem('content');
     let titleContent = localStorage.getItem('title');
     let descriptionContent = localStorage.getItem('description');
+    let tags = JSON.parse(localStorage.getItem('tag'));
   
     // set the values of the text boxes
     document.querySelector("#text-input").innerHTML = textContent;
     document.querySelector("#title").value = titleContent;
     document.querySelector("#description").value = descriptionContent;
+    let tagContainer = document.querySelector('.tag-container');
+    // for each tag in the tags array, create a tag element
+    // if tags is not empty, create a tag for each tag in the array
+    if (tags) {
+        tags.forEach(tag => {
+            createTag(tag);
+        });
+    }
   };

@@ -3,6 +3,7 @@
     let textContent = document.querySelector("#content").innerHTML;
     let titleBox = document.querySelector("#title");
     let descriptionBox = document.querySelector("#description");
+    let tags = document.querySelectorAll('.tag');
 
     
     let titleContent = titleBox.value;
@@ -12,6 +13,7 @@
     localStorage.setItem('content', textContent);
     localStorage.setItem('title', titleContent);
     localStorage.setItem('description', descriptionContent);
+    localStorage.setItem('tag', JSON.stringify(Array.from(tags).map(tag => tag.textContent)));
 
     //console.log(localStorage.getItem('text'));
     //console.log(localStorage.getItem('title'));
@@ -25,13 +27,24 @@ window.onload = function() {
   let textContent = localStorage.getItem('content');
   let titleContent = localStorage.getItem('title');
   let descriptionContent = localStorage.getItem('description');
+  let tags = JSON.parse(localStorage.getItem('tag'));
 
-  console.log(textContent);
-  console.log(titleContent);
-  console.log(descriptionContent);
+  //console.log(textContent);
+  //console.log(titleContent);
+  //console.log(descriptionContent);
   // set the values of the text boxes
   
   document.querySelector("#content").innerHTML = textContent;
   document.querySelector("#title").value = titleContent;
   document.querySelector("#description").value = descriptionContent;
+
+  let tagContainer = document.querySelector('.tag-container');
+  tags.forEach(tag => {
+    let tagElement = document.createElement('span');
+    console.log(tag.slice(0, -1));
+    tagElement.textContent = tag.slice(0,-1);
+    tagElement.classList.add('tag');
+    //tagElement.classList.add('remove-tag'); not working
+    tagContainer.appendChild(tagElement);
+  });
 };
