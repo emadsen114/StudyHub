@@ -87,7 +87,7 @@ document.querySelector("#save").addEventListener('click', function() {
     //console.log(typeof titleContent);
     console.log("Description: " + descriptionContent);
     //console.log(typeof descriptionContent);
-    console.log("Tags: " + JSON.stringify(tags.map(tag => tag.textContent)));
+    console.log("Tags: " + JSON.stringify(tags.map(tag => tag.textContent.slice(0,-1))));
 
   });
 
@@ -123,10 +123,11 @@ document.querySelector("#clear").addEventListener('click', function() {
         localStorage.removeItem('text');
         localStorage.removeItem('title');
         localStorage.removeItem('description');
-        document.querySelector("#content").value = ""; // This causes an error TypeError, but still works after refresh
-        document.querySelector("#title").value = "";
-        document.querySelector("#description").value = "";
+        //document.querySelector("#content").value = ""; // This causes an error TypeError, but still works after refresh
+        //document.querySelector("#title").value = "";
+        //document.querySelector("#description").value = "";
 
+        localStorage.removeItem('posts');
         // temp solution as clear doesn't work immediately
         // only clears after page is manually refreshed by user,
         // but it is supposed to automatically clear after confirm clear
@@ -143,7 +144,8 @@ const tagInput = document.querySelector('#input');
 const form = document.forms[0];
 const tagContainer = document.querySelector('.tag-container');
 
-const tags = []; // Stores string values of tags
+const tags_string = []; // Stores string values of tags
+const tags = []; // Stores the tag elements
 
 const createTag = (tagValue) => {
     const value = tagValue.trim();
@@ -162,7 +164,8 @@ const createTag = (tagValue) => {
 
     tag.appendChild(close);
     tagContainer.appendChild(tag);
-    tags.push(value); // Stores the string value instead of the element
+    tags.push(tag); // Stores the tag elements
+    tags_string.push(value); // Stores the string value instead of the element
 
     tagInput.value = '';
     tagInput.focus();
@@ -174,7 +177,7 @@ const savePost = () => {
     const content = document.querySelector("#text-input").innerHTML;
 
     // No need to initialize tags here again, it's already available globally
-    const post = { title, description, content, tags: [...tags] }; // Use spread operator to copy tags
+    const post = { title, description, content, tags_string: [...tags_string] }; // Use spread operator to copy tags
     let posts = JSON.parse(localStorage.getItem('posts')) || [];
     posts.push(post);
     localStorage.setItem('posts', JSON.stringify(posts));
