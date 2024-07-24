@@ -11,7 +11,7 @@ body {
 .container {
     background-color: white;
     width: 120vmin;
-    height: 90vmin;
+    min-height: 80vmin;
     padding: 50px 30px;
     position: absolute;
     transform: translate(-50%, -50%);
@@ -86,4 +86,15 @@ button {
     margin-left: 5px;
   }
   
-  
+  #date-label {
+    margin-top: 0px;
+    display: inline-block;
+    border: none;
+    width: 53%;
+  }
+
+  #author-label {
+    display: inline-block;
+    border: none;
+    width: 30%;
+  }
