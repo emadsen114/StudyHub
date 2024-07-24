@@ -15,7 +15,7 @@ mongoose.connect('mongodb+srv://studyhubsose:team25SOSE@studyhub.3lizww3.mongodb
   .catch(err => console.error('Could not connect to MongoDB...', err));
   
 //modify the route to display posts
-const Post = require('./path/to/postModel');
+const Post = require('./frontend/views/postModel.js');
 
 app.get('/homePage.html', async (request, response) => {
   try {
@@ -80,7 +80,7 @@ const server = app.listen(PORT, () =>
   })
     */
 
-const mongoose = require('mongoose');
+
 const { readFile } = require('fs');
 const mongoString = process.env.DATABASE_URL;
 
