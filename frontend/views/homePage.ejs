@@ -12,7 +12,8 @@
 <body>
     <header>
         <div>
-            <img src="/workspaces/StudyHub/frontend/public/images/bust.png" alt="Logo">
+            <img src="/images/bust.png" class = "logo" alt="Logo">
+           
         </div>
         <div class="container">
             <h1>StudyHub</h1>
@@ -20,11 +21,11 @@
         <nav>
             <a href="#">Subjects</a>
             <a href="#">Trending</a>
-            <a href="#">Create Post</a>
+            <a href="#">Post</a>
             <a href="#">About</a>
         </nav>
         <div>
-            <img src="frontend/public/images/profile.png" alt="Profile" style="border-radius: 50%;">
+            <img src="/images/profile.png" alt="Profile" class = "logo" style="border-radius: 50%;">
         </div>
     </header>
 
@@ -34,20 +35,7 @@
     </div>
 
     <!--make functioning scroll later-->
-    <div class="container">
-        <div class="posts">
-            <div class="post">
-                <h2>POST</h2>
-            </div>
-            <div class="meta">Name: title; subject, date posted</div>
-            <div class="post">
-                <h2>POST</h2>
-            </div>
-            <div class="meta"> 
-               
-                </div>
-           
-    </div>
+    
 
 
 
@@ -114,6 +102,20 @@ body {
             padding: 10px;
             border-radius: 5px;
             max-width: 200px;
+        }
+        .logo {
+            width: 60px; 
+            height: auto;           
+        }
+        nav a {
+            color: #fff; /* Change to your preferred color */
+            text-decoration: none; /* Removes underline */
+            padding: 10px;
+            background-color: #645466; /* Optional: adds background color */
+            border-radius: 5px; /* Optional: rounds corners */
+        }
+        nav a:hover {
+            background-color: #666;
         }
 </style>
 
