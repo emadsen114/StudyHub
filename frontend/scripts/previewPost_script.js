@@ -31,10 +31,10 @@ document.querySelector("#submit").addEventListener('click', function() {
   // removes the 'x' from the tags
   tags = tags.map(tag => tag.slice(0, -1));
   
-  console.log("HTML content of the text box: " + textContent);
-  console.log("Title: " + titleContent);
-  console.log("Description: " + descriptionContent);
-  console.log("Tags: " + JSON.stringify(tags));
+  //console.log("HTML content of the text box: " + textContent);
+  //console.log("Title: " + titleContent);
+  //console.log("Description: " + descriptionContent);
+  //console.log("Tags: " + JSON.stringify(tags));
   window.location.href = "successfulPost.html";
 });
 
