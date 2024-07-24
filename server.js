@@ -184,6 +184,27 @@ app.get('/aboutPage.html', (request, response) => {
     });
 });
 
+app.get('/homePage', async (request, response) => {
+    try {
+      const posts = await Post.find().sort({ createdAt: -1 });
+      response.render('homePage', { posts }); // Assuming you're using EJS
+    } catch (err) {
+      console.error('Error fetching posts:', err);
+      response.status(500).send('Sorry, something went wrong!');
+    }
+});
+
+  app.get('/createPost.html', (request, response) => {
+    readFile(path.join(__dirname, 'frontend', 'views', 'createPost.html'), 'utf8', (err, html) => {
+        if (err) {
+            console.error('Error reading createPost.html:', err);
+            response.status(500).send('Sorry, something went wrong!');
+            return;
+        }
+        response.send(html);
+    });
+});
+
 
 console.log('App available on http://localhost:3000');
 
