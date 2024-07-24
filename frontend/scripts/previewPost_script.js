@@ -15,9 +15,9 @@
     localStorage.setItem('description', descriptionContent);
     localStorage.setItem('tag', JSON.stringify(Array.from(tags).map(tag => tag.textContent)));
 
-    //console.log(localStorage.getItem('text'));
-    //console.log(localStorage.getItem('title'));
-    //console.log(localStorage.getItem('description'));
+    console.log(localStorage.getItem('text'));
+    console.log(localStorage.getItem('title'));
+    console.log(localStorage.getItem('description'));
     window.location.href = "createPost.html";
 });
 
@@ -31,11 +31,11 @@ document.querySelector("#submit").addEventListener('click', function() {
   // removes the 'x' from the tags
   tags = tags.map(tag => tag.slice(0, -1));
   
-  //console.log("HTML content of the text box: " + textContent);
-  //console.log("Title: " + titleContent);
-  //console.log("Description: " + descriptionContent);
-  //console.log("Tags: " + JSON.stringify(tags));
-  window.location.href = "successfulPost.html";
+  console.log("HTML content of the text box: " + textContent);
+  console.log("Title: " + titleContent);
+  console.log("Description: " + descriptionContent);
+  console.log("Tags: " + JSON.stringify(tags));
+  //window.location.href = "successfulPost.html";
 });
 
 //once previewPost.html is loaded, the contents of the text boxes are set to the saved contents
@@ -64,4 +64,16 @@ window.onload = function() {
     //tagElement.classList.add('remove-tag'); not working
     tagContainer.appendChild(tagElement);
   });
+
+  // add username into the username field
+  let usernameField = document.getElementById('author-label');
+  //temporary
+  usernameField.value = "Author: test name";
+
+  // add current date into the date field
+  let dateField = document.getElementById('date-label');
+  let currentDate = new Date();
+  let formattedDate = currentDate.toLocaleString();
+  dateField.value = "Date: " + formattedDate;
+
 };
