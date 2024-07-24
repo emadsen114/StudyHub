@@ -205,6 +205,13 @@ app.get('/homePage', async (request, response) => {
     });
 });
 
+// Example in server.js or backend/routes/routes.js
+app.get('/', async (req, res) => {
+    // Simulate fetching posts from a database
+    const posts = await fetchPostsFromDatabase();
+    res.render('frontend/views/homePage', { posts });
+});
+
 
 console.log('App available on http://localhost:3000');
 

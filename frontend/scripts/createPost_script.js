@@ -142,7 +142,8 @@ const tagInput = document.querySelector('#input');
 
 const form = document.forms[0];
 const tagContainer = document.querySelector('.tag-container');
-const tags = [];
+
+const tags = []; // Stores string values of tags
 
 const createTag = (tagValue) => {
     const value = tagValue.trim();
@@ -154,8 +155,6 @@ const createTag = (tagValue) => {
     tag.setAttribute('class', 'tag');
     tag.appendChild(tagContent);
 
-    //tag.setAttribute('class', 'remove');
-    //tag.onclick = handleRemoveTag;
     const close = document.createElement('span');
     close.setAttribute('class', 'remove-tag');
     close.innerHTML = '&#10006;';
@@ -163,11 +162,25 @@ const createTag = (tagValue) => {
 
     tag.appendChild(close);
     tagContainer.appendChild(tag);
-    tags.push(tag);
+    tags.push(value); // Stores the string value instead of the element
 
     tagInput.value = '';
     tagInput.focus();
 };
+
+const savePost = () => {
+    const title = document.querySelector("#title").value;
+    const description = document.querySelector("#description").value;
+    const content = document.querySelector("#text-input").innerHTML;
+
+    // No need to initialize tags here again, it's already available globally
+    const post = { title, description, content, tags: [...tags] }; // Use spread operator to copy tags
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.push(post);
+    localStorage.setItem('posts', JSON.stringify(posts));
+};
+
+document.querySelector("#save").addEventListener('click', savePost);
 
 const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -210,3 +223,5 @@ window.onload = function() {
         });
     }
   };
+
+ 
