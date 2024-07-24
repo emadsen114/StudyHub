@@ -35,7 +35,7 @@ document.querySelector("#submit").addEventListener('click', function() {
   console.log("Title: " + titleContent);
   console.log("Description: " + descriptionContent);
   console.log("Tags: " + JSON.stringify(tags));
-  //window.location.href = "successfulPost.html";
+  window.location.href = "successfulPost.html";
 });
 
 //once previewPost.html is loaded, the contents of the text boxes are set to the saved contents
