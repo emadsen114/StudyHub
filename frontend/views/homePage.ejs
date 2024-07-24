@@ -33,9 +33,26 @@
     <div class="search-bar">
         <input type="text" placeholder="Search">
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const postsContainer = document.querySelector('.posts');
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
 
-    <!--make functioning scroll later-->
-    
+        if (posts.length > 0) {
+            posts.forEach(function(post) {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p>${post.description}</p>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+        } else {
+            postsContainer.innerHTML = '<p>No posts to display.</p>';
+        }
+    });
+</script>
 
 
 
