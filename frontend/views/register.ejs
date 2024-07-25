@@ -20,11 +20,11 @@
         </div>
         <div class="right-panel">
             <form>
-                <label for="username">Username</label><br />
-                <input type="text" id="username" required placeholder="Username" /><br />
+                <label for="username">Username</label>
+                <input type="text" id="username" required placeholder="Username" />
                 <label for="password">Password</label><br />
-                <input type="password" id="password" required placeholder="Password" /><br />
-                <input type="submit" value="register" /><br />
+                <input type="password" id="password" required placeholder="Password" />
+                <button type="submit" value="register">Register</button>
                 <p>By submitting the form you agree to our <a href="#">Terms of Service</a></p>
             </form>
             <!--<a href="/login">Already registered? Login</a>-->
@@ -37,7 +37,7 @@
         const display = document.querySelector('.error')
         form.addEventListener('submit', async (e) => {
            e.preventDefault()
-           display.textContent = ''
+           //display.textContent = '' // commented out as it was returning a TypeError
            try {
              const res = await fetch('/api/auth/register', {
              method: 'POST',
