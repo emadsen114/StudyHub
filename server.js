@@ -103,8 +103,8 @@ app.use(express.static(path.join(__dirname, 'backend')));
 app.use("/api/auth", require("./backend/Auth/route"))
 app.use(cookieParser());
 
-app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
-app.get("/basic", userAuth, (req, res) => res.send("User Route"));
+//app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
+//app.get("/basic", userAuth, (req, res) => res.send("User Route"));
 //app.get("/", (req, res) => res.render("home"))
 app.get("/register", (req, res) => res.render("register"))
 app.get("/login", (req, res) => res.render("login"))
