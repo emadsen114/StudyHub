@@ -29,4 +29,10 @@ a {
 ul{
     float: none; /* Reset any floating if applied */
     position: static;
+    align-items: center;
+}
+
+li {
+    margin:0%;
+    text-align: left;
 }
