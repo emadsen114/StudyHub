@@ -8,8 +8,10 @@
   </head>
   <body>
     <h1>Users</h1>
+    <h2 class="greeting"></h2>
     <ul></ul>
     <button class="logout"><a href="/logout">Log Out</a></button>
+    <button class="home"><a href="/homePage">Home</a></button>
     <script>
       const ul = document.querySelector("ul")
       const getUsers = async () => {
@@ -24,6 +26,17 @@
           }
         })
       }
+      const displayGreeting = async () => {
+      const res = await fetch("/api/auth/currentUser");
+      const data = await res.json();
+      if (res.ok) {
+        const greeting = document.querySelector(".greeting");
+        greeting.textContent = `Hello, ${data.username}`;
+      } else {
+        return null;
+      }
+    };
+      displayGreeting();
       getUsers()
     </script>
   </body>

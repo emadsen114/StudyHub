@@ -111,6 +111,7 @@ app.get("/login", (req, res) => res.render("login"))
 app.get("/admin", adminAuth, (req, res) => res.render("admin"))
 app.get("/basic", userAuth, (req, res) => res.render("user"))
 
+// clears the cookie
 app.get("/logout", (req, res) => {
     res.cookie("jwt", "", { maxAge: "1" })
     res.redirect("/")
