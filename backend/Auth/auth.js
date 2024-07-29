@@ -72,6 +72,7 @@ exports.register = async (req, res, next) => {
                 expiresIn: maxAge, // 3hrs in sec
               }
             );
+            // creates a cookie with the jwt token (like a session ID) and expires after a set time
             res.cookie("jwt", token, {
               httpOnly: true,
               maxAge: maxAge * 1000, // 3hrs in ms
@@ -167,3 +168,29 @@ exports.getUsers = async (req, res, next) => {
       res.status(401).json({ message: "Not successful", error: err.message })
     )
 }
+
+// this logic was found by comparing the exports.login function in Github Copilot
+exports.currentUser = async (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, jwtSecret, async (err, decodedToken) => {
+      if (err) {
+        res.status(401).json({ message: "Not authorized" });
+      } else {
+        const user = await User.findById(decodedToken.id);
+        if (!user) {
+          res.status(404).json({ message: "User not found" });
+        } else {
+          res.status(201).json({
+            message: "User successfully found",
+            username: user.username,
+            user: user._id,
+            role: user.role,
+          });
+        }
+      }
+    });
+  } else {
+    res.status(400).json({ message: "No token provided" });
+  }
+};
