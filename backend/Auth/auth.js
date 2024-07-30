@@ -194,3 +194,68 @@ exports.currentUser = async (req, res, next) => {
     res.status(400).json({ message: "No token provided" });
   }
 };
+
+const Post = require('../../frontend/views/postModel.js');
+
+exports.createPost = async (req, res, next) => {
+    const { title, content, description, author, tags } = req.body;
+
+    try {
+        const newPost = new Post({
+            title,
+            content,
+            description,
+            author,
+            tags: JSON.parse(tags) // Parse the tags from string to array
+        });
+
+        await newPost.save(); // Save the new post to the database
+
+        res.status(201).json({ message: 'Post created successfully', post: newPost, id: newPost._id });
+    } catch (error) {
+        next(error); // Pass the error to the error handling middleware
+    }
+};
+
+exports.getPost = async (req, res, next) => {
+  const postID = req.params.id; // Get the postID from the route parameter
+
+  await Post.findById(postID) // Find the post by its ID
+    .then(post => {
+      const container = {}
+      container.title = post.title
+      container.content = post.content
+      container.description = post.description
+      container.author = post.author
+      container.tags = post.tags
+      res.status(200).json({ post: container })
+    })
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+}
+
+exports.updatePost = async (req, res, next) => {
+  const { id, title, content, description, author, tags, draft } = req.body;
+
+  try {
+      const post = await Post.findById(id);
+
+      if (!post) {
+          return res.status(404).json({ message: 'Post not found' });
+      }
+
+      post.title = title;
+      post.content = content;
+      post.description = description;
+      post.author = author;
+      post.tags = JSON.parse(tags); // Parse the tags from string to array
+      post.draft = draft;
+
+      await post.save(); // Save the updated post to the database
+
+      res.status(200).json({ message: 'Post updated successfully', post });
+  } catch (error) {
+      next(error); // Pass the error to the error handling middleware
+  }
+};
