@@ -92,8 +92,43 @@ document.querySelector("#save").addEventListener('click', function() {
   });
 
 
+
   // this function is used to redirect the user to the previewPost page
-document.querySelector("#next").addEventListener('click', function() {
+document.querySelector("#next").addEventListener('click', async function() {
+    /*
+    const urlParams = new URLSearchParams(window.location.search);
+    const postID = urlParams.get('id');
+
+    const response = await fetch(`/api/auth/getPost/${postID}`);
+    const post = await response.json();
+
+    if (post.post.draft) {
+        // update Post object, call updatePost instead of createPost
+        try {
+            const res = await fetch(`/api/auth/updatePost/${postID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.querySelector("#title").value,
+                    content: document.querySelector("#text-input").innerHTML,
+                    description: document.querySelector("#description").value,
+                    tag: JSON.stringify(tags.map(tag => tag.textContent.slice(0,-1))),
+                })
+            });
+            const data = await res.json()
+            console.log(data);
+            if(res.status === 400 || res.status === 401){
+                return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+            }
+
+            window.location.href = `previewPost.html?id=${data.post._id}`;
+        } catch (error) {
+            console.log("Not working");
+        };
+    } else {
+    */
     let contentBox = document.querySelector("#text-input");
     let titleBox = document.querySelector("#title");
     let descriptionBox = document.querySelector("#description");
@@ -101,18 +136,54 @@ document.querySelector("#next").addEventListener('click', function() {
     let content = contentBox.innerHTML;
     let titleContent = titleBox.value;
     let descriptionContent = descriptionBox.value;
+    let tagContent = JSON.stringify(tags.map(tag => tag.textContent.slice(0,-1)));
 
+    // call currentUser request to retrieve the username
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    const username = data.username;
+
+    // create a new Post object
+    let newPost = {
+        title: titleContent,
+        content: content,
+        description: descriptionContent,
+        author: username,
+        tags: tagContent,
+        draft: false
+    }
+    console.log(newPost);
+
+    try {
+        const res = await fetch('/api/auth/createPost', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost),
+        })
+        const data = await res.json()
+        console.log(data);
+        if(res.status === 400 || res.status === 401){
+            return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+        }
+
+        window.location.href = `previewPost.html?id=${data.post._id}`;
+    } catch (err) {
+        console.log("Not working")
+    }
+    }
     // save the contents to localStorage
-    localStorage.setItem('content', content);
-    localStorage.setItem('title', titleContent);
-    localStorage.setItem('description', descriptionContent);
-    localStorage.setItem('tag', JSON.stringify(tags.map(tag => tag.textContent)));
+    //localStorage.setItem('content', content);
+    //localStorage.setItem('title', titleContent);
+    //localStorage.setItem('description', descriptionContent);
+    //localStorage.setItem('tag', JSON.stringify(tags.map(tag => tag.textContent)));
 
     //console.log(localStorage.getItem('content'));
     //console.log(localStorage.getItem('title'));
     //console.log(localStorage.getItem('description'));
-    window.location.href = "previewPost.html";
-});
+    //window.location.href = "previewPost.html";
+);
 
 // this function is used to clear all entries from the textboxes (clears local storage)
 document.querySelector("#clear").addEventListener('click', function() {
@@ -206,12 +277,26 @@ function clearTags() {
 
 form.addEventListener('submit', handleFormSubmit);
 
-window.onload = function() {
+const displayGreeting = async () => {
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    if (res.ok) {
+        const greeting = document.querySelector(".greeting");
+        greeting.textContent = `Creating Post for ${data.username}`;
+        console.log("message printed")
+    } else {
+        return null;
+    }
+  };
+  displayGreeting();
+
+window.onload = async function() {
     // get the saved contents from localStorage
     let textContent = localStorage.getItem('content');
     let titleContent = localStorage.getItem('title');
     let descriptionContent = localStorage.getItem('description');
     let tags = JSON.parse(localStorage.getItem('tag'));
+    
   
     // set the values of the text boxes
     document.querySelector("#text-input").innerHTML = textContent;
@@ -225,6 +310,26 @@ window.onload = function() {
             createTag(tag);
         });
     }
+
+    // Get the post ID from the URL **DOESNT WORK**
+    //const urlParams = new URLSearchParams(window.location.search);
+    //const postID = urlParams.get('id');
+    //console.log(postID)
+
+    //const response = await fetch(`/api/auth/getPost/${postID}`);
+    //const post = await response.json();
+    //console.log(post);
+    //console.log(textContent);
+    //console.log(titleContent);
+    //console.log(descriptionContent);
+    // set the values of the text boxes
+    
+    //document.querySelector("#content").innerHTML = post.post.content;
+    //document.querySelector("#title").value = post.post.title;
+    //document.querySelector("#description").value = post.post.description;
+
+
+    //let tagContainer = document.querySelector('.tag-container');
   };
 
  
