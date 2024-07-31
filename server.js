@@ -92,21 +92,13 @@ database.on('error', (error) => {
 database.once('connected', () => {
   console.log('Database Connected');
 });require('dotenv').config();
-const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth } = require("./backend/middleware/auth.js");
 
-const express = require('express');
-const path = require('path');
 
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect('mongodb+srv://studyhubsose:team25SOSE@studyhub.3lizww3.mongodb.net/?retryWrites=true&w=majority&appName=StudyHub', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB...', err));
   
-//modify the route to display posts
-const Post = require('./frontend/views/postModel.js');
 
 app.get('/homePage.html', async (request, response) => {
   try {
@@ -149,15 +141,9 @@ app.get('/homePage.html', (request, response) => {
 });
 
 
-// server listening 
-app.listen(PORT, () => {
-    console.log(`Server Started at ${PORT}`)
-})
 
-const connectDB = require("./backend/config/database");
 
-//Connecting the Database
-connectDB();
+
 
 /*
 const server = app.listen(PORT, () =>
@@ -171,8 +157,6 @@ const server = app.listen(PORT, () =>
   })
     */
 
-
-const { readFile } = require('fs');
 
 mongoose.connect(mongoString);
 
