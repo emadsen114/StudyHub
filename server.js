@@ -1,10 +1,101 @@
+const express = require('express');
+const app = express();
+const PORT = 3000;
+const path = require('path');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const { readFile } = require('fs');
+const cookieParser = require("cookie-parser");
+const { adminAuth, userAuth } = require("./backend/middleware/auth.js");
+const Post = require('./frontend/views/postModel.js'); // Ensure this path is correct
+
 require('dotenv').config();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.join(__dirname, 'backend')));
+app.use(cookieParser());
+
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch(err => console.error('Could not connect to MongoDB...', err));
+
+// Set the view engine to ejs
+app.set('view engine', 'ejs');
+
+// Set the views directory
+app.set('views', path.join(__dirname, 'frontend/views'));
+
+// Route to fetch and display posts on the homepage
+app.get('/homePage.html', async (request, response) => {
+  try {
+    const posts = await Post.find().sort({ createdAt: -1 });
+    response.render('homePage', { posts });
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    response.status(500).send('Sorry, something went wrong!');
+  }
+});
+
+// Route to handle post submissions
+app.post('/submit-post', async (request, response) => {
+  try {
+    const newPost = new Post(request.body);
+    await newPost.save();
+    response.redirect('/homePage');
+  } catch (err) {
+    console.error('Error saving post:', err);
+    response.status(500).send('Sorry, something went wrong!');
+  }
+});
+
+// Other routes and middleware
+app.get('/aboutPage.html', (request, response) => {
+  readFile(path.join(__dirname, 'frontend', 'views', 'aboutPage.html'), 'utf8', (err, html) => {
+    if (err) {
+      console.error('Error reading aboutPage.html:', err);
+      response.status(500).send('Sorry, something went wrong!');
+      return;
+    }
+    response.send(html);
+  });
+});
+
+app.get('/createPost.html', (request, response) => {
+  readFile(path.join(__dirname, 'frontend', 'views', 'createPost.html'), 'utf8', (err, html) => {
+    if (err) {
+      console.error('Error reading createPost.html:', err);
+      response.status(500).send('Sorry, something went wrong!');
+      return;
+    }
+    response.send(html);
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server Started at ${PORT}`);
+});
+
+const connectDB = require("./backend/config/database");
+connectDB();
+
+const mongoString = process.env.DATABASE_URL;
+mongoose.connect(mongoString);
+const database = mongoose.connection;
+
+database.on('error', (error) => {
+  console.log(error);
+});
+
+database.once('connected', () => {
+  console.log('Database Connected');
+});require('dotenv').config();
 const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth } = require("./backend/middleware/auth.js");
 
 const express = require('express');
-const app = express();
-const PORT = 3000
 const path = require('path');
 
 const mongoose = require('mongoose');
@@ -82,10 +173,8 @@ const server = app.listen(PORT, () =>
 
 
 const { readFile } = require('fs');
-const mongoString = process.env.DATABASE_URL;
 
 mongoose.connect(mongoString);
-const database = mongoose.connection;
 
 database.on('error', (error) => {
     console.log(error)

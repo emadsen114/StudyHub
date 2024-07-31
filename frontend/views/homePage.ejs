@@ -37,12 +37,27 @@
             </div>
             <!--<img src="/images/profile.png" alt="Profile" class = "logo" style="border-radius: 50%;">-->
         </div>
+        <script src="/scripts/homePage.js"></script>
+    </div>
     </header>
 
     <!--make functioning search bar later-->
     <div class="search-bar">
         <input type="text" placeholder="Search">
     </div>
+    <div class="posts">
+        <% posts.forEach(post => { %>
+            <div class="post">
+                <h2><%= post.title %></h2>
+                <p><%= post.content %></p>
+                <div class="meta">
+                    <span>By <%= post.author %></span> |
+                    <span><%= post.createdAt.toDateString() %></span>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
 <script>
     const displayGreeting = async () => {
         const res = await fetch("/api/auth/currentUser");
@@ -71,24 +86,7 @@
     getRole();
     
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const postsContainer = document.querySelector('.posts');
-        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-
-        if (posts.length > 0) {
-            posts.forEach(function(post) {
-                const postElement = document.createElement('div');
-                postElement.className = 'post';
-                postElement.innerHTML = `
-                    <h2>${post.title}</h2>
-                    <p>${post.description}</p>
-                `;
-                postsContainer.appendChild(postElement);
-            });
-        } else {
-            postsContainer.innerHTML = '<p>No posts to display.</p>';
-        }
-    });
+    
 </script>
 
 
@@ -96,111 +94,132 @@
 </body>
 <style>
 body {
-            background-color: #2a2a2a;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        header h1 {
-            margin: 0;
-        }
-        header nav {
-            display: flex;
-            gap: 20px;
-        }
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .search-bar input[type="text"] {
-            width: 60%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .posts {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .post {
-            background-color: #fff;
-            color: #000;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        .post .meta {
-            margin-top: 10px;
-            color: #666;
-        }
-        .sidebar {
-            position: fixed;
-            right: 20px;
-            top: 20px;
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            max-width: 200px;
-        }
-        .logo {
-            width: 60px; 
-            height: auto;           
-        }
-        nav a {
-            color: #fff; /* Change to your preferred color */
-            text-decoration: none; /* Removes underline */
-            padding: 10px;
-            background-color: #645466; /* Optional: adds background color */
-            border-radius: 5px; /* Optional: rounds corners */
-        }
-        nav a:hover {
-            background-color: #666;
-        }
+    background-color: #2a2a2a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-        /* Dropdown Button CSS */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            padding: 12px 16px;
-            z-index: 1;
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
 
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
+header h1 {
+    margin: 0;
+}
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+header nav {
+    display: flex;
+    gap: 20px;
+}
 
-        .greeting {
-            color: black;
-        }
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
 
+.search-bar input[type="text"] {
+    width: 60%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.posts-container {
+    max-height: 500px; /* Adjust height as needed */
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 270px; /* Add padding to the left and right */
+}
+
+.post {
+    background-color: #fff;
+    color: #000;
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow */
+}
+
+.post .meta {
+    margin-top: 10px;
+    color: #666;
+}
+
+.sidebar {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 200px;
+}
+
+.logo {
+    width: 60px; 
+    height: auto;           
+}
+
+nav a {
+    color: #f6f5f3; /* Change to your preferred color */
+    text-decoration: none; /* Removes underline */
+    padding: 20px;
+    width: 50px;
+    background-color: #645466; /* Optional: adds background color */
+    border-radius: 5px; /* Optional: rounds corners */
+}
+
+nav a:hover {
+    background-color: #666;
+}
+
+/* Dropdown Button CSS */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.greeting {
+    color: black;
+}
 
 </style>
 
