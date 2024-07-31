@@ -23,8 +23,9 @@
     const postID = urlParams.get('id');
 
     // setting draft to false, so it calls updatePost instead of createPost
+    /*
     const res = await fetch(`/api/auth/updatePost/${postID}`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -35,7 +36,8 @@
       console.log("Error updating post");
       return;
     }
-    //window.location.href = `createPost.html?id=${postID}`;  make a new page for edit page
+    */
+    window.location.href = `editPost.html?id=${postID}`;  //make a new page for edit page
 });
 
 document.querySelector("#submit").addEventListener('click', function() {
@@ -80,6 +82,7 @@ window.onload = async function() {
   document.querySelector("#title").value = post.post.title;
   document.querySelector("#description").value = post.post.description;
 
+  console.log(post.post.tags);
 
   let tagContainer = document.querySelector('.tag-container');
   post.post.tags.forEach(tag => {

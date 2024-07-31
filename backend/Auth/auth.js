@@ -236,26 +236,21 @@ exports.getPost = async (req, res, next) => {
 }
 
 exports.updatePost = async (req, res, next) => {
-  const { id, title, content, description, author, tags, draft } = req.body;
+  const postID = req.params.id; // Get the postID from the route parameter
+  const updatedData = req.body;
+
+  //console.log("Req body: " + req.body);
 
   try {
-      const post = await Post.findById(id);
+    const options = { new: true }
+    const post = await Post.findByIdAndUpdate(postID, updatedData, options)
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }  
+      
 
-      if (!post) {
-          return res.status(404).json({ message: 'Post not found' });
-      }
-
-      post.title = title;
-      post.content = content;
-      post.description = description;
-      post.author = author;
-      post.tags = JSON.parse(tags); // Parse the tags from string to array
-      post.draft = draft;
-
-      await post.save(); // Save the updated post to the database
-
-      res.status(200).json({ message: 'Post updated successfully', post });
+    res.status(200).json({ message: 'Post updated successfully', post });
   } catch (error) {
-      next(error); // Pass the error to the error handling middleware
+    res.status(400).json({ message: error.message });
   }
 };

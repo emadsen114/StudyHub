@@ -95,83 +95,37 @@ document.querySelector("#save").addEventListener('click', function() {
 
   // this function is used to redirect the user to the previewPost page
 document.querySelector("#next").addEventListener('click', async function() {
-    /*
     const urlParams = new URLSearchParams(window.location.search);
     const postID = urlParams.get('id');
 
     const response = await fetch(`/api/auth/getPost/${postID}`);
     const post = await response.json();
 
-    if (post.post.draft) {
-        // update Post object, call updatePost instead of createPost
-        try {
-            const res = await fetch(`/api/auth/updatePost/${postID}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: document.querySelector("#title").value,
-                    content: document.querySelector("#text-input").innerHTML,
-                    description: document.querySelector("#description").value,
-                    tag: JSON.stringify(tags.map(tag => tag.textContent.slice(0,-1))),
-                })
-            });
-            const data = await res.json()
-            console.log(data);
-            if(res.status === 400 || res.status === 401){
-                return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
-            }
-
-            window.location.href = `previewPost.html?id=${data.post._id}`;
-        } catch (error) {
-            console.log("Not working");
-        };
-    } else {
-    */
-    let contentBox = document.querySelector("#text-input");
-    let titleBox = document.querySelector("#title");
-    let descriptionBox = document.querySelector("#description");
-
-    let content = contentBox.innerHTML;
-    let titleContent = titleBox.value;
-    let descriptionContent = descriptionBox.value;
-    let tagContent = JSON.stringify(tags.map(tag => tag.textContent.slice(0,-1)));
-
-    // call currentUser request to retrieve the username
-    const res = await fetch("/api/auth/currentUser");
-    const data = await res.json();
-    const username = data.username;
-
-    // create a new Post object
-    let newPost = {
-        title: titleContent,
-        content: content,
-        description: descriptionContent,
-        author: username,
-        tags: tagContent,
-        draft: false
-    }
-    console.log(newPost);
-
+    // update Post object, call updatePost instead of createPost
     try {
-        const res = await fetch('/api/auth/createPost', {
-            method: 'POST',
+        const res = await fetch(`/api/auth/updatePost/${postID}`, {
+            method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newPost),
-        })
+            body: JSON.stringify({
+                title: document.querySelector("#title").value,
+                content: document.querySelector("#text-input").innerHTML,
+                description: document.querySelector("#description").value,
+                tags: tags.map(tag => tag.textContent.slice(0,-1)),
+            })
+        });
         const data = await res.json()
         console.log(data);
         if(res.status === 400 || res.status === 401){
             return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
         }
-
         window.location.href = `previewPost.html?id=${data.post._id}`;
-    } catch (err) {
-        console.log("Not working")
-    }
+    } catch (error) {
+        console.log("Not working");
+    };
+
+
     }
     // save the contents to localStorage
     //localStorage.setItem('content', content);
@@ -186,14 +140,43 @@ document.querySelector("#next").addEventListener('click', async function() {
 );
 
 // this function is used to clear all entries from the textboxes (clears local storage)
-document.querySelector("#clear").addEventListener('click', function() {
+document.querySelector("#clear").addEventListener('click', async function() {
     // Opens up a popup asking to confirm clear
     if (confirm('Are you sure you want to clear all fields? This cannot be undone.')) {
         clearTags();
-        localStorage.removeItem('content');
-        localStorage.removeItem('text');
-        localStorage.removeItem('title');
-        localStorage.removeItem('description');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postID = urlParams.get('id');
+
+        const response = await fetch(`/api/auth/getPost/${postID}`);
+        const post = await response.json();
+
+        // update Post object, call updatePost instead of createPost
+        try {
+            const res = await fetch(`/api/auth/updatePost/${postID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: "",
+                    content: "",
+                    description: "",
+                    tags: [],
+                })
+            });
+            const data = await res.json()
+            console.log(data);
+            if(res.status === 400 || res.status === 401){
+                return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+            }
+        } catch (error) {
+            console.log("Not working");
+        };
+        //localStorage.removeItem('content');
+        //localStorage.removeItem('text');
+        //localStorage.removeItem('title');
+        //localStorage.removeItem('description');
         //document.querySelector("#content").value = ""; // This causes an error TypeError, but still works after refresh
         //document.querySelector("#title").value = "";
         //document.querySelector("#description").value = "";
@@ -236,6 +219,8 @@ const createTag = (tagValue) => {
     tag.appendChild(close);
     tagContainer.appendChild(tag);
     tags.push(tag); // Stores the tag elements
+    // Add the new tag to the tags array
+    //tags.push(tag.textContent.slice(0,-1));
     tags_string.push(value); // Stores the string value instead of the element
 
     tagInput.value = '';
@@ -266,6 +251,14 @@ const handleRemoveTag = (e) => {
     const item = e.target.textContent;
     e.target.parentElement.remove();
     tags.splice(tags.indexOf(item), 1);
+
+    // Remove the tag from the tags array
+    /*
+    const index = tags.indexOf(e.target.textContent.slice(0,-1));
+    if (index > -1) {
+        tags.splice(index, 1);
+    }
+    */
 }
 
 function clearTags() {
@@ -275,7 +268,7 @@ function clearTags() {
         tag.remove();
     });
     //tags.length = 0; // Clear the tags array
-    localStorage.removeItem('tag'); // Clear the tags from localStorage
+    //localStorage.removeItem('tag'); // Clear the tags from localStorage
 }
 
 form.addEventListener('submit', handleFormSubmit);
@@ -285,7 +278,7 @@ const displayGreeting = async () => {
     const data = await res.json();
     if (res.ok) {
         const greeting = document.querySelector(".greeting");
-        greeting.textContent = `Creating Post for ${data.username}`;
+        greeting.textContent = `Editing post for ${data.username}`;
         console.log("message printed")
     } else {
         return null;
@@ -295,11 +288,11 @@ const displayGreeting = async () => {
 
 window.onload = async function() {
     /*
-    // get the saved contents from localStorage **OLD**
-    //let textContent = localStorage.getItem('content');
-    //let titleContent = localStorage.getItem('title');
-    //let descriptionContent = localStorage.getItem('description');
-    //let tags = JSON.parse(localStorage.getItem('tag'));
+    // get the saved contents from localStorage
+    let textContent = localStorage.getItem('content');
+    let titleContent = localStorage.getItem('title');
+    let descriptionContent = localStorage.getItem('description');
+    let tags = JSON.parse(localStorage.getItem('tag'));
     
   
     // set the values of the text boxes
@@ -314,27 +307,33 @@ window.onload = async function() {
             createTag(tag);
         });
     }
-
+    */
     // Get the post ID from the URL **DOESNT WORK**
-    //const urlParams = new URLSearchParams(window.location.search);
-    //const postID = urlParams.get('id');
-    //console.log(postID)
+    const urlParams = new URLSearchParams(window.location.search);
+    const postID = urlParams.get('id');
+    console.log(postID)
 
-    //const response = await fetch(`/api/auth/getPost/${postID}`);
-    //const post = await response.json();
-    //console.log(post);
+    const response = await fetch(`/api/auth/getPost/${postID}`);
+    const post = await response.json();
+    console.log(post);
     //console.log(textContent);
     //console.log(titleContent);
     //console.log(descriptionContent);
     // set the values of the text boxes
     
-    //document.querySelector("#content").innerHTML = post.post.content;
-    //document.querySelector("#title").value = post.post.title;
-    //document.querySelector("#description").value = post.post.description;
+    document.querySelector("#text-input").innerHTML = post.post.content;
+    document.querySelector("#title").value = post.post.title;
+    document.querySelector("#description").value = post.post.description;
 
+    const saved_tags = post.post.tags;
+    console.log(saved_tags);
+    let tagContainer = document.querySelector('.tag-container');
+    if (saved_tags) {
+        saved_tags.forEach(tag => {
+            createTag(tag);
+        });
+    }
 
-    //let tagContainer = document.querySelector('.tag-container');
-    */
   };
 
  
