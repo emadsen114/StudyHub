@@ -9,7 +9,7 @@ router.route("/deleteUser").delete(adminAuth, deleteUser)
 router.route("/register").post(register)
 //module.exports = router
 router.route("/login").post(login);
-router.route("/update").put(update);
+//router.route("/update").put(update);
 router.route("/deleteUser").delete(deleteUser);
 router.route("/getUsers").get(getUsers);
 router.route("/currentUser").get(currentUser);
