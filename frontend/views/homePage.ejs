@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/homePage.css"    />
+    <script type="module" src="/scripts/homePage.js"></script>
 
     <title>Home</title>
     <!-- this should be what you get forwarded to after signing in -->
@@ -59,32 +60,44 @@
     </div>
 </div>
 <script>
-    const displayGreeting = async () => {
-        const res = await fetch("/api/auth/currentUser");
-        const data = await res.json();
-        if (res.ok) {
-            const greeting = document.querySelector(".greeting");
-            greeting.textContent = `Hello, ${data.username}`;
-        } else {
-            return null;
-        }
-      };
-      displayGreeting();
+   import { stripHtmlTags } from './utils.js';
 
-    const getRole = async () => {
-        const res = await fetch("/api/auth/currentUser");
-        const data = await res.json();
-        const link = document.querySelector(".dropdown-content a[href='/basic']");
-        if (res.ok) {
-            if (data.role === "admin") {
-                link.href = "/admin";
-            }
-        } else {
-            return null;
+// Assuming you have the content in a variable called postContent
+let postContent = "<p>This is a <strong>test</strong> post.</p>";
+// Sanitize the content
+let sanitizedContent = stripHtmlTags(postContent);
+// Display the sanitized content
+document.getElementById('content').textContent = sanitizedContent;
+
+let postDescription = "<p>This is a <em>description</em> of the post.</p>";
+let sanitizedDescription = stripHtmlTags(postDescription);
+document.getElementById('description').textContent = sanitizedDescription;
+
+const displayGreeting = async () => {
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    if (res.ok) {
+        const greeting = document.querySelector(".greeting");
+        greeting.textContent = `Hello, ${data.username}`;
+    } else {
+        return null;
+    }
+};
+displayGreeting();
+
+const getRole = async () => {
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    const link = document.querySelector(".dropdown-content a[href='/basic']");
+    if (res.ok) {
+        if (data.role === "admin") {
+            link.href = "/admin";
         }
-    };
-    getRole();
-    
+    } else {
+        return null;
+    }
+};
+getRole();
 
     
 </script>
