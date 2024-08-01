@@ -95,7 +95,7 @@ exports.register = async (req, res, next) => {
     }
   };
   
-
+/*
 exports.update = async (req, res, next) => {
   const { role, id } = req.body;
   // Verifying if role and id is presnt
@@ -108,6 +108,8 @@ exports.update = async (req, res, next) => {
           // Verifies the user is not an admin
           if (user.role !== "admin") {
             user.role = role;
+            await user.save();
+            /*
             user.save((err) => {
               //Monogodb error checker
               if (err) {
@@ -131,6 +133,32 @@ exports.update = async (req, res, next) => {
       res.status(400).json({
         message: "Role is not admin",
       });
+    }
+  } else {
+    res.status(400).json({ message: "Role or Id not present" });
+  }
+};
+*/
+
+exports.update = async (req, res, next) => {
+  const { role, id } = req.body;
+  if (role && id) {
+    if (role === "admin") {
+      try {
+        const user = await User.findById(id);
+        if (user && user.role !== "admin") {
+          user.role = role;
+          await user.save();
+          console.log("User updated successfully");
+          res.status("201").json({ message: "Update successful", user });
+        } else {
+          res.status(400).json({ message: "User is already an Admin" });
+        }
+      } catch (error) {
+        res.status(400).json({ message: "An error occurred", error: error.message });
+      }
+    } else {
+      res.status(400).json({ message: "Role is not admin" });
     }
   } else {
     res.status(400).json({ message: "Role or Id not present" });
@@ -160,6 +188,7 @@ exports.getUsers = async (req, res, next) => {
         const container = {}
         container.username = user.username
         container.role = user.role
+        container.id = user._id
         return container
       })
       res.status(200).json({ user: userFunction })
