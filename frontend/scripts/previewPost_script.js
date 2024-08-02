@@ -42,19 +42,21 @@
 
 document.querySelector("#submit").addEventListener('click', function() {
   // variables contain strings of the content, title, description, and tags
-  let textContent = localStorage.getItem('content');
-  let titleContent = localStorage.getItem('title');
-  let descriptionContent = localStorage.getItem('description');
-  let tags = JSON.parse(localStorage.getItem('tag'));
+  //let textContent = localStorage.getItem('content');
+  //let titleContent = localStorage.getItem('title');
+  //let descriptionContent = localStorage.getItem('description');
+  //let tags = JSON.parse(localStorage.getItem('tag'));
 
   // removes the 'x' from the tags
-  tags = tags.map(tag => tag.slice(0, -1));
+  //tags = tags.map(tag => tag.slice(0, -1));
   
-  console.log("HTML content of the text box: " + textContent);
-  console.log("Title: " + titleContent);
-  console.log("Description: " + descriptionContent);
-  console.log("Tags: " + JSON.stringify(tags));
-  //window.location.href = "successfulPost.html";
+  //console.log("HTML content of the text box: " + textContent);
+  //console.log("Title: " + titleContent);
+  //console.log("Description: " + descriptionContent);
+  //console.log("Tags: " + JSON.stringify(tags));
+  if (confirm("Post successful!")) {
+    window.location.href = "homePage.html";
+  }
 });
 
 //once previewPost.html is loaded, the contents of the text boxes are set to the saved contents
