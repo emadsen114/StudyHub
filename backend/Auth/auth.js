@@ -304,3 +304,19 @@ exports.getAllPosts = async (req, res, next) => {
       res.status(401).json({ message: "Not successful", error: err.message })
     )
 };
+
+exports.deletePost = async (req, res, next) => {
+  const postID = req.params.id; // Get the postID from the route parameter
+  await Post.findByIdAndDelete(postID)
+    .then(post => {
+      if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+      res.status(201).json({ message: "Post successfully deleted", post })
+    })
+    .catch(error =>
+      res
+        .status(400)
+        .json({ message: "An error occurred", error: error.message })
+    )
+}

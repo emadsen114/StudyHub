@@ -2,7 +2,7 @@ const express = require("express")
 const cookieParser = require("cookie-parser")
 const router = express.Router()
 router.use(cookieParser())
-const { register, login, update, deleteUser, getUsers, currentUser, createPost, getPost, updatePost, getAllPosts } = require("./auth");
+const { register, login, update, deleteUser, getUsers, currentUser, createPost, getPost, updatePost, getAllPosts, deletePost } = require("./auth");
 const { adminAuth } = require("../middleware/auth")
 router.route("/update").put(adminAuth, update)
 router.route("/deleteUser").delete(adminAuth, deleteUser)
@@ -17,5 +17,6 @@ router.route("/createPost").post(createPost);
 router.route("/getPost/:id").get(getPost);
 router.route("/updatePost/:id").patch(updatePost);
 router.route("/getAllPosts").get(getAllPosts);
+router.route("/deletePost/:id").delete(deletePost);
 
 module.exports = router
