@@ -283,3 +283,24 @@ exports.updatePost = async (req, res, next) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+exports.getAllPosts = async (req, res, next) => {
+  await Post.find({})
+    .then(posts => {
+      const postFunction = posts.map(post => {
+        const container = {}
+        container.title = post.title
+        container.content = post.content
+        container.description = post.description
+        container.author = post.author
+        container.tags = post.tags
+        container.id = post._id
+        container.createdAt = post.createdAt
+        return container
+      })
+      res.status(200).json({ post: postFunction })
+    })
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+};
