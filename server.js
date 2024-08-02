@@ -286,6 +286,12 @@ app.get('/', async (req, res) => {
     res.render('frontend/views/homePage', { posts });
 });
 
+//search bar
+app.get('/search', (req, res) => {
+    const query = req.query.query.toLowerCase();
+    const matchingPosts = posts.filter(post => post.title.toLowerCase().includes(query));
+    res.json(matchingPosts);
+});
 
 console.log('App available on http://localhost:3000');
 
