@@ -227,7 +227,7 @@ exports.currentUser = async (req, res, next) => {
 const Post = require('../../frontend/views/postModel.js');
 
 exports.createPost = async (req, res, next) => {
-    const { title, content, description, author, tags } = req.body;
+    const { title, content, description, author, tags, draft } = req.body;
 
     try {
         const newPost = new Post({
@@ -235,7 +235,8 @@ exports.createPost = async (req, res, next) => {
             content,
             description,
             author,
-            tags: JSON.parse(tags) // Parse the tags from string to array
+            tags: JSON.parse(tags), // Parse the tags from string to array
+            draft
         });
 
         await newPost.save(); // Save the new post to the database
@@ -296,6 +297,7 @@ exports.getAllPosts = async (req, res, next) => {
         container.tags = post.tags
         container.id = post._id
         container.createdAt = post.createdAt
+        container.draft = post.draft
         return container
       })
       res.status(200).json({ post: postFunction })

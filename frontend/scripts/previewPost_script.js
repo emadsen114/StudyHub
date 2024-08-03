@@ -40,21 +40,33 @@
     window.location.href = `editPost.html?id=${postID}`;  //make a new page for edit page
 });
 
-document.querySelector("#submit").addEventListener('click', function() {
-  // variables contain strings of the content, title, description, and tags
-  //let textContent = localStorage.getItem('content');
-  //let titleContent = localStorage.getItem('title');
-  //let descriptionContent = localStorage.getItem('description');
-  //let tags = JSON.parse(localStorage.getItem('tag'));
-
-  // removes the 'x' from the tags
-  //tags = tags.map(tag => tag.slice(0, -1));
-  
-  //console.log("HTML content of the text box: " + textContent);
-  //console.log("Title: " + titleContent);
-  //console.log("Description: " + descriptionContent);
-  //console.log("Tags: " + JSON.stringify(tags));
+document.querySelector("#submit").addEventListener('click', async function() {
   if (confirm("Post successful!")) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postID = urlParams.get('id');
+
+    const response = await fetch(`/api/auth/getPost/${postID}`);
+    const post = await response.json();
+
+    // update Post object, call updatePost instead of createPost
+    try {
+        const res = await fetch(`/api/auth/updatePost/${postID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                draft: false
+            })
+        });
+        const data = await res.json()
+        console.log(data);
+        if(res.status === 400 || res.status === 401){
+            return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+        }
+    } catch (error) {
+        console.log("Not working");
+    };
     window.location.href = "homePage.html";
   }
 });

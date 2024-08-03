@@ -56,12 +56,12 @@
         const data2 = await res2.json();
         //console.log(data2.post);
         data2.post.map(post => {
-          //console.log(post.author)
+          console.log(post)
           if (post.author === currentUser) {
             userPosts.push(post);
           }
         });
-        //console.log(userPosts);
+        console.log(userPosts);
         const p = document.querySelector('p');
         userPosts.forEach(post => {
           let postContainer = document.querySelector('.posts-container');
@@ -89,6 +89,14 @@
           deleteButton.textContent = 'Delete';
           deleteButton.className = 'delete';
           postElement.appendChild(deleteButton);
+
+          if (post.draft === true) {
+            let draft = document.createElement('span');
+            draft.textContent = '[DRAFT - Post is only visible to you]';
+            draft.className = 'draft';
+            postElement.appendChild(draft);
+          }
+
           });
           const editButtons = document.querySelectorAll('.edit');
           editButtons.forEach((button, i) => {
