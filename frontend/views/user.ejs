@@ -8,16 +8,25 @@
     <title>User page</title>
   </head>
   <body>
-    <div class="container">
-      <h1 class="greeting"></h1>
+    <div class="header-links">
       <button class="logout"><a href="/logout">Log Out</a></button>
       <button class="home"><a href="/homePage">Home</a></button>
-      <!--<ul></ul>-->
-      <div class="posts-container">
-        <h2>Your Posts</h2>
-        <p></p>
-      </div>
     </div>
+    <div class="container">
+      <div class="greeting"></div>
+      <!--<button class="logout"><a href="/logout">Log Out</a></button>
+      <button class="home"><a href="/homePage">Home</a></button>-->
+      <!--<ul></ul>-->
+
+        <div class="left-posts-container">
+          <h2>Your Posts</h2>
+          <p></p>
+        </div>
+        <div class="right-posts-container">
+          <h2>Your Drafts</h2>
+          <p></p>
+        </div>
+
     </div>
     <script>
       const ul = document.querySelector("ul")
@@ -47,6 +56,7 @@
     // global variable for user posts
     
       let userPosts = [];
+      let userDrafts = [];
       const getAllPosts = async () => {
         const res = await fetch("/api/auth/currentUser");
         const data = await res.json();
@@ -56,15 +66,18 @@
         const data2 = await res2.json();
         //console.log(data2.post);
         data2.post.map(post => {
-          console.log(post)
-          if (post.author === currentUser) {
+          //console.log(post)
+          if (post.author === currentUser && post.draft === true) {
+            userDrafts.push(post);
+          }
+          else if (post.author === currentUser) {
             userPosts.push(post);
           }
         });
-        console.log(userPosts);
+        //console.log(userPosts);
         const p = document.querySelector('p');
         userPosts.forEach(post => {
-          let postContainer = document.querySelector('.posts-container');
+          let postContainer = document.querySelector('.left-posts-container');
           let postElement = document.createElement('div');
 
           postElement.className = 'post';
@@ -101,8 +114,8 @@
           const editButtons = document.querySelectorAll('.edit');
           editButtons.forEach((button, i) => {
             button.addEventListener('click', async () => {
-              console.log("Edit button clicked");
-              console.log("postID: " + userPosts[i].id);
+              //console.log("Edit button clicked");
+              //console.log("postID: " + userPosts[i].id);
 
               window.location.assign(`/editPost.html?id=${userPosts[i].id}`);
           });
@@ -111,7 +124,7 @@
           const deleteButtons = document.querySelectorAll('.delete');
           deleteButtons.forEach((button, i) => {
             button.addEventListener('click', async () => {
-              console.log("Delete button clicked");
+              //console.log("Delete button clicked");
               const res = await fetch(`/api/auth/deletePost/${userPosts[i].id}`, {
                 method: 'DELETE',
               });

@@ -72,23 +72,39 @@ window.onload = initializer();
 
 
 // this function is used to print the selected text into the console
-document.querySelector("#save").addEventListener('click', function() {
-    let textBox = document.querySelector("#text-input");
-    let titleBox = document.querySelector("#title");
-    let descriptionBox = document.querySelector("#description");
+document.querySelector("#save").addEventListener('click', async function() {
+    if (confirm("Save as draft?")) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postID = urlParams.get('id');
 
-    let textContent = textBox.innerHTML;
-    let titleContent = titleBox.value;
-    let descriptionContent = descriptionBox.value;
-  
-    console.log("HTML content of the text box: " + textContent);
-    //console.log(typeof textContent);
-    console.log("Title: " + titleContent);
-    //console.log(typeof titleContent);
-    console.log("Description: " + descriptionContent);
-    //console.log(typeof descriptionContent);
-    console.log("Tags: " + JSON.stringify(tags.map(tag => tag.textContent.slice(0,-1))));
+        const response = await fetch(`/api/auth/getPost/${postID}`);
+        const post = await response.json();
 
+        // update Post object, call updatePost instead of createPost
+        try {
+            const res = await fetch(`/api/auth/updatePost/${postID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.querySelector("#title").value,
+                    content: document.querySelector("#text-input").innerHTML,
+                    description: document.querySelector("#description").value,
+                    tags: tags.map(tag => tag.textContent.slice(0,-1)),
+                    draft: true
+                })
+            });
+            const data = await res.json()
+            console.log(data);
+            if(res.status === 400 || res.status === 401){
+                return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+            }
+            window.location.href = `homePage.html`;
+        } catch (error) {
+            console.log("Not working");
+        };
+    }
   });
 
 
