@@ -8,25 +8,22 @@
     <title>User page</title>
   </head>
   <body>
-    <div class="header-links">
-      <button class="logout"><a href="/logout">Log Out</a></button>
-      <button class="home"><a href="/homePage">Home</a></button>
-    </div>
     <div class="container">
-      <div class="greeting"></div>
-      <!--<button class="logout"><a href="/logout">Log Out</a></button>
-      <button class="home"><a href="/homePage">Home</a></button>-->
-      <!--<ul></ul>-->
-
+      <div class ="header">
+        <h1 class="greeting"></h1>
+        <button class="logout"><a href="/logout">Log Out</a></button>
+        <button class="home"><a href="/homePage">Home</a></button>
+      </div>
+      <div class="posts-container">
+        <h2>Your Posts</h2>
         <div class="left-posts-container">
-          <h2>Your Posts</h2>
           <p></p>
         </div>
+        <h2>Your Drafts</h2>
         <div class="right-posts-container">
-          <h2>Your Drafts</h2>
           <p></p>
         </div>
-
+      </div>
     </div>
     <script>
       const ul = document.querySelector("ul")
@@ -74,69 +71,83 @@
             userPosts.push(post);
           }
         });
-        //console.log(userPosts);
+        console.log(userDrafts);
         const p = document.querySelector('p');
-        userPosts.forEach(post => {
-          let postContainer = document.querySelector('.left-posts-container');
-          let postElement = document.createElement('div');
 
-          postElement.className = 'post';
-         //console.log(post)
-          //console.log(post.createdAt)
-          postElement.innerHTML = `
-            <h2>${post.title}</h2>
-            <p>${post.content}</p>
-            <div class="meta">
-              <span>By ${post.author}</span> |
-              <span>${new Date(post.createdAt).toDateString()}</span>
-            </div>
-            `;
-          postContainer.appendChild(postElement);
+        const displayPosts = (posts, container) => {
+          posts.forEach(post => {
+            let postContainer = document.querySelector(container);
+            let postElement = document.createElement('div');
 
-          let editButton = document.createElement('button');
-          editButton.textContent = 'Edit';
-          editButton.className = 'edit';
-          postElement.appendChild(editButton);
+            postElement.className = 'post';
+            //console.log(post)
+            //console.log(post.createdAt)
+            postElement.innerHTML = `
+              <h2>${post.title}</h2>
+              <p>${post.content}</p>
+              <div class="meta">
+                <span>By ${post.author}</span> |
+                <span>${new Date(post.createdAt).toDateString()}</span>
+              </div>
+              `;
+            postContainer.appendChild(postElement);
 
-          let deleteButton = document.createElement('button');
-          deleteButton.textContent = 'Delete';
-          deleteButton.className = 'delete';
-          postElement.appendChild(deleteButton);
+            let editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.className = 'edit';
+            postElement.appendChild(editButton);
 
-          if (post.draft === true) {
-            let draft = document.createElement('span');
-            draft.textContent = '[DRAFT - Post is only visible to you]';
-            draft.className = 'draft';
-            postElement.appendChild(draft);
-          }
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete';
+            postElement.appendChild(deleteButton);
 
-          });
-          const editButtons = document.querySelectorAll('.edit');
-          editButtons.forEach((button, i) => {
-            button.addEventListener('click', async () => {
-              //console.log("Edit button clicked");
-              //console.log("postID: " + userPosts[i].id);
+            if (post.draft === true) {
+              let draft = document.createElement('span');
+              draft.textContent = '[DRAFT - Post is only visible to you]';
+              draft.className = 'draft';
+              postElement.appendChild(draft);
+            }
 
-              window.location.assign(`/editPost.html?id=${userPosts[i].id}`);
-          });
-        });
-
-          const deleteButtons = document.querySelectorAll('.delete');
-          deleteButtons.forEach((button, i) => {
-            button.addEventListener('click', async () => {
-              //console.log("Delete button clicked");
-              const res = await fetch(`/api/auth/deletePost/${userPosts[i].id}`, {
-                method: 'DELETE',
-              });
-              const data = await res.json();
-              location.assign('/basic');
             });
 
-
-        });
+          
       };
+
+      displayPosts(userPosts, '.left-posts-container');
+      displayPosts(userDrafts, '.right-posts-container');
+      configureButtons(userPosts);
+      configureButtons(userDrafts);
+
+    };
+
+    const configureButtons = async (postType) => {
+      const editButtons = document.querySelectorAll('.edit');
+        editButtons.forEach((button, i) => {
+          button.addEventListener('click', async () => {
+            //console.log("Edit button clicked");
+            //console.log("postID: " + userPosts[i].id);
+            window.location.assign(`/editPost.html?id=${postType[i].id}`);
+        });
+      });
+
+      const deleteButtons = document.querySelectorAll('.delete');
+        deleteButtons.forEach((button, i) => {
+          button.addEventListener('click', async () => {
+            //console.log("Delete button clicked");
+            const res = await fetch(`/api/auth/deletePost/${postType[i].id}`, {
+              method: 'DELETE',
+            });
+            const data = await res.json();
+            location.assign('/basic');
+          });
+      });
+    } 
+      //console.log(userPosts);
       // Remove the closing parenthesis
       getAllPosts();
+      //configureButtons(userPosts);
+      //configureButtons(userDrafts); 
       displayGreeting();
       //getUsers()
       
