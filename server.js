@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth } = require("./backend/middleware/auth.js");
 const Post = require('./frontend/views/postModel.js'); // Ensure this path is correct
 
+
 require('dotenv').config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +18,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.use(express.static(path.join(__dirname, 'backend')));
 app.use(cookieParser());
+
+// Use the routes defined in backend/routes/routes.js
+app.use('/api', require('./backend/routes/routes'));
+
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB...'))
@@ -200,7 +205,7 @@ app.listen(3000, () => {
 
 const routes = require('./backend/routes/routes');
 
-app.use('/api', routes)
+app.use('/api', routes);
 
 // Serve static files from the 'frontend/views' directory
 app.use(express.static(path.join(__dirname, 'frontend', 'views')));
@@ -287,12 +292,11 @@ app.get('/', async (req, res) => {
 });
 
 //search bar
-app.get('/search', (req, res) => {
-    const query = req.query.query.toLowerCase();
-    const matchingPosts = posts.filter(post => post.title.toLowerCase().includes(query));
-    res.json(matchingPosts);
+app.get('/search', async (req, res) => {
+  const query = req.query.query.toLowerCase();
+  const matchingPosts = await Post.find({ title: { $regex: query, $options: 'i' } }); // Adjust based on your schema
+  res.json(matchingPosts);
 });
-
 console.log('App available on http://localhost:3000');
 
 

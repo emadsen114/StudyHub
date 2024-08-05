@@ -1,6 +1,14 @@
 const express = require('express');
 const Model = require('../models/User');
 const router = express.Router()
+const searchController  = require('../controllers/searchController');
+const postController = require('../controllers/postController');
+
+
+
+router.get('/search', searchController.searchPosts);
+router.get('/post/:id', postController.getPost);
+
 
 module.exports = router;
 
