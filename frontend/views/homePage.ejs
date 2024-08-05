@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/homePage.css"    />
-    <script type="module" src="/scripts/homePage.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="/css/homePage.css" />
     <title>Home</title>
     <!-- this should be what you get forwarded to after signing in -->
-     <!--where posts should be displayed-->
+    <!--where posts should be displayed-->
 </head>
 <body>
     <header>
         <!--https://www.w3schools.com/howto/howto_css_dropdown.asp-->
-
-        <img src="/images/bust.png" class = "logo" alt="Logo">
-           
-        </div>
+        <img src="/images/bust.png" class="logo" alt="Logo">
         <div class="container">
             <h1>StudyHub</h1>
         </div>
@@ -29,24 +24,24 @@
         </nav>
         <div>
             <div class="dropdown">
-                <img src="/images/profile.png" class = "logo dropdown-toggle" alt="Logo" style="border-radius: 50%;">
+                <img src="/images/profile.png" class="logo dropdown-toggle" alt="Logo" style="border-radius: 50%;">
                 <div class="dropdown-content">
                     <h2 class="greeting"></h2>
                     <a href="/basic">User</a><br>
                     <a href="/logout">Logout</a>
                 </div>
             </div>
-            <!--<img src="/images/profile.png" alt="Profile" class = "logo" style="border-radius: 50%;">-->
         </div>
-        <script src="/scripts/homePage.js"></script>
-    </div>
     </header>
-
-    <!--make functioning search bar later-->
     <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search">
-        <div id="search-results" class="search-results"></div>
+        <input type="text" id="search-input" placeholder="Search posts...">
+        <div class="search-results" id="search-results"></div>
     </div>
+    <div class="search-results" id="search-results"></div>
+    <div class="posts-container" id="posts-container">
+        <!-- Existing posts will be rendered here -->
+    </div>
+    <script src="/scripts/homePage_script.js"></script>
     <div class="posts">
         <% posts.forEach(post => { %>
             <div class="post">
@@ -54,84 +49,80 @@
                 <p><%= post.content %></p>
                 <div class="meta">
                     <span>By <%= post.author %></span> |
-                    <span><%= post.createdAt.toDateString() %></span>
+                    <span><%= post.createdAt ? post.createdAt.toDateString() : 'Unknown Date' %></span>
                 </div>
             </div>
         <% }) %>
     </div>
-</div>
-<script>
-   import { stripHtmlTags } from './utils.js';
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+    
+            searchInput.addEventListener('input', async function() {
+                const query = this.value;
+                if (query.length > 0) {
+                    const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+                    const results = await response.json();
+                    displayResults(results);
+                } else {
+                    searchResults.innerHTML = '';
+                }
+            });
+    
+            function displayResults(results) {
+                searchResults.innerHTML = '';
+                results.forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('search-result');
+                    resultItem.innerHTML = `
+                        <h3>${result.title}</h3>
+                        <p>${result.content}</p>
+                    `;
+                    searchResults.appendChild(resultItem);
+                });
+            }
+        });
+        import { stripHtmlTags } from './utils.js';
+        // Assuming you have the content in a variable called postContent
+        let postContent = "<p>This is a <strong>test</strong> post.</p>";
+        // Sanitize the content
+        let sanitizedContent = stripHtmlTags(postContent);
+        // Display the sanitized content
+        document.getElementById('content').textContent = sanitizedContent;
+        let postDescription = "<p>This is a <em>description</em> of the post.</p>";
+        let sanitizedDescription = stripHtmlTags(postDescription);
+        document.getElementById('description').textContent = sanitizedDescription;
 
-// Assuming you have the content in a variable called postContent
-let postContent = "<p>This is a <strong>test</strong> post.</p>";
-// Sanitize the content
-let sanitizedContent = stripHtmlTags(postContent);
-// Display the sanitized content
-document.getElementById('content').textContent = sanitizedContent;
+        const displayGreeting = async () => {
+            const res = await fetch("/api/auth/currentUser");
+            const data = await res.json();
+            if (res.ok) {
+                const greeting = document.querySelector(".greeting");
+                greeting.textContent = `Hello, ${data.username}`;
+            } else {
+                return null;
+            }
+        };
+        displayGreeting();
 
-let postDescription = "<p>This is a <em>description</em> of the post.</p>";
-let sanitizedDescription = stripHtmlTags(postDescription);
-document.getElementById('description').textContent = sanitizedDescription;
+        const getRole = async () => {
+            const res = await fetch("/api/auth/currentUser");
+            const data = await res.json();
+            const link = document.querySelector(".dropdown-content a[href='/basic']");
+            if (res.ok) {
+                if (data.role === "admin") {
+                    link.href = "/admin";
+                }
+            } else {
+                return null;
+            }
+        };
+        getRole();
 
-const displayGreeting = async () => {
-    const res = await fetch("/api/auth/currentUser");
-    const data = await res.json();
-    if (res.ok) {
-        const greeting = document.querySelector(".greeting");
-        greeting.textContent = `Hello, ${data.username}`;
-    } else {
-        return null;
-    }
-};
-displayGreeting();
-
-const getRole = async () => {
-    const res = await fetch("/api/auth/currentUser");
-    const data = await res.json();
-    const link = document.querySelector(".dropdown-content a[href='/basic']");
-    if (res.ok) {
-        if (data.role === "admin") {
-            link.href = "/admin";
-        }
-    } else {
-        return null;
-    }
-};
-getRole();
-
-//search bar
-document.getElementById('search-input').addEventListener('input', async function() {
-    const query = this.value;
-    if (query.length > 0) {
-        const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
-        const results = await response.json();
-        displayResults(results);
-    } else {
-        clearResults();
-    }
-});
-
-function displayResults(results) {
-    const resultsContainer = document.getElementById('search-results');
-    resultsContainer.innerHTML = '';
-    results.forEach(post => {
-        const postElement = document.createElement('div');
-        postElement.className = 'search-result';
-        postElement.innerText = post.title;
-        resultsContainer.appendChild(postElement);
-    });
-}
-
-function clearResults() {
-    const resultsContainer = document.getElementById('search-results');
-    resultsContainer.innerHTML = '';
-}
-</script>
-
-
-
+    </script>
 </body>
+
 <style>
 body {
     background-color: #2a2a2a;
@@ -165,6 +156,7 @@ header nav {
 }
 
 .search-bar {
+    position: relative;
     display: flex;
     justify-content: center;
     margin: 20px 0;
@@ -179,23 +171,26 @@ header nav {
 
 .search-results {
     position: absolute;
+    top: 100%; /* Position the search results just below the search bar */
+    left: 285px;
+    color: #000000;
     background-color: white;
     border: 1px solid #ccc;
-    width: 60%;
+    width: 61%;
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
 }
 
 .search-result {
-    padding: 10px;
     cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
 }
 
 .search-result:hover {
     background-color: #f0f0f0;
 }
-
 .posts-container {
     max-height: 500px; /* Adjust height as needed */
     overflow-y: auto;
