@@ -4,14 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/user.css"    />
     <title>User page</title>
   </head>
   <body>
-    <h1>Users</h1>
-    <h2 class="greeting"></h2>
-    <ul></ul>
-    <button class="logout"><a href="/logout">Log Out</a></button>
-    <button class="home"><a href="/homePage">Home</a></button>
+    <div class="container">
+      <h1 class="greeting"></h1>
+      <button class="logout"><a href="/logout">Log Out</a></button>
+      <button class="home"><a href="/homePage">Home</a></button>
+      <!--<ul></ul>-->
+      <div class="posts-container">
+        <h2>Your Posts</h2>
+        <p></p>
+      </div>
+    </div>
+    </div>
     <script>
       const ul = document.querySelector("ul")
       const getUsers = async () => {
@@ -31,13 +38,95 @@
       const data = await res.json();
       if (res.ok) {
         const greeting = document.querySelector(".greeting");
-        greeting.textContent = `Hello, ${data.username}`;
+        greeting.textContent = `${data.username}'s Profile`;
       } else {
         return null;
       }
     };
+
+    // global variable for user posts
+    
+      let userPosts = [];
+      const getAllPosts = async () => {
+        const res = await fetch("/api/auth/currentUser");
+        const data = await res.json();
+        const currentUser = data.username;
+        //console.log(currentUser);
+        const res2 = await fetch("/api/auth/getAllPosts");
+        const data2 = await res2.json();
+        //console.log(data2.post);
+        data2.post.map(post => {
+          console.log(post)
+          if (post.author === currentUser) {
+            userPosts.push(post);
+          }
+        });
+        console.log(userPosts);
+        const p = document.querySelector('p');
+        userPosts.forEach(post => {
+          let postContainer = document.querySelector('.posts-container');
+          let postElement = document.createElement('div');
+
+          postElement.className = 'post';
+         //console.log(post)
+          //console.log(post.createdAt)
+          postElement.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+            <div class="meta">
+              <span>By ${post.author}</span> |
+              <span>${new Date(post.createdAt).toDateString()}</span>
+            </div>
+            `;
+          postContainer.appendChild(postElement);
+
+          let editButton = document.createElement('button');
+          editButton.textContent = 'Edit';
+          editButton.className = 'edit';
+          postElement.appendChild(editButton);
+
+          let deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.className = 'delete';
+          postElement.appendChild(deleteButton);
+
+          if (post.draft === true) {
+            let draft = document.createElement('span');
+            draft.textContent = '[DRAFT - Post is only visible to you]';
+            draft.className = 'draft';
+            postElement.appendChild(draft);
+          }
+
+          });
+          const editButtons = document.querySelectorAll('.edit');
+          editButtons.forEach((button, i) => {
+            button.addEventListener('click', async () => {
+              console.log("Edit button clicked");
+              console.log("postID: " + userPosts[i].id);
+
+              window.location.assign(`/editPost.html?id=${userPosts[i].id}`);
+          });
+        });
+
+          const deleteButtons = document.querySelectorAll('.delete');
+          deleteButtons.forEach((button, i) => {
+            button.addEventListener('click', async () => {
+              console.log("Delete button clicked");
+              const res = await fetch(`/api/auth/deletePost/${userPosts[i].id}`, {
+                method: 'DELETE',
+              });
+              const data = await res.json();
+              location.assign('/basic');
+            });
+
+
+        });
+      };
+      // Remove the closing parenthesis
+      getAllPosts();
       displayGreeting();
-      getUsers()
+      //getUsers()
+      
     </script>
   </body>
 </html>
