@@ -227,7 +227,7 @@ exports.currentUser = async (req, res, next) => {
 const Post = require('../../frontend/views/postModel.js');
 
 exports.createPost = async (req, res, next) => {
-    const { title, content, description, author, tags } = req.body;
+    const { title, content, description, author, tags, draft } = req.body;
 
     try {
         const newPost = new Post({
@@ -235,7 +235,8 @@ exports.createPost = async (req, res, next) => {
             content,
             description,
             author,
-            tags: JSON.parse(tags) // Parse the tags from string to array
+            tags: JSON.parse(tags), // Parse the tags from string to array
+            draft
         });
 
         await newPost.save(); // Save the new post to the database
@@ -283,3 +284,41 @@ exports.updatePost = async (req, res, next) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+exports.getAllPosts = async (req, res, next) => {
+  await Post.find({})
+    .then(posts => {
+      const postFunction = posts.map(post => {
+        const container = {}
+        container.title = post.title
+        container.content = post.content
+        container.description = post.description
+        container.author = post.author
+        container.tags = post.tags
+        container.id = post._id
+        container.createdAt = post.createdAt
+        container.draft = post.draft
+        return container
+      })
+      res.status(200).json({ post: postFunction })
+    })
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+};
+
+exports.deletePost = async (req, res, next) => {
+  const postID = req.params.id; // Get the postID from the route parameter
+  await Post.findByIdAndDelete(postID)
+    .then(post => {
+      if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+      res.status(201).json({ message: "Post successfully deleted", post })
+    })
+    .catch(error =>
+      res
+        .status(400)
+        .json({ message: "An error occurred", error: error.message })
+    )
+}

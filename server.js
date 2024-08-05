@@ -31,7 +31,7 @@ app.set('views', path.join(__dirname, 'frontend/views'));
 // Route to fetch and display posts on the homepage
 app.get('/homePage.html', async (request, response) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+    const posts = await Post.find().sort({ createdAt: -1 }); // find( {draft: false}) **ADD this later**
     response.render('homePage', { posts });
   } catch (err) {
     console.error('Error fetching posts:', err);
@@ -286,6 +286,12 @@ app.get('/', async (req, res) => {
     res.render('frontend/views/homePage', { posts });
 });
 
+//search bar
+app.get('/search', (req, res) => {
+    const query = req.query.query.toLowerCase();
+    const matchingPosts = posts.filter(post => post.title.toLowerCase().includes(query));
+    res.json(matchingPosts);
+});
 
 console.log('App available on http://localhost:3000');
 

@@ -44,7 +44,8 @@
 
     <!--make functioning search bar later-->
     <div class="search-bar">
-        <input type="text" placeholder="Search">
+        <input type="text" id="search-input" placeholder="Search">
+        <div id="search-results" class="search-results"></div>
     </div>
     <div class="posts">
         <% posts.forEach(post => { %>
@@ -99,7 +100,33 @@ const getRole = async () => {
 };
 getRole();
 
-    
+//search bar
+document.getElementById('search-input').addEventListener('input', async function() {
+    const query = this.value;
+    if (query.length > 0) {
+        const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+        const results = await response.json();
+        displayResults(results);
+    } else {
+        clearResults();
+    }
+});
+
+function displayResults(results) {
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = '';
+    results.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.className = 'search-result';
+        postElement.innerText = post.title;
+        resultsContainer.appendChild(postElement);
+    });
+}
+
+function clearResults() {
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = '';
+}
 </script>
 
 
@@ -148,6 +175,25 @@ header nav {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+}
+
+.search-results {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 60%;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.search-result {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-result:hover {
+    background-color: #f0f0f0;
 }
 
 .posts-container {
