@@ -80,13 +80,14 @@
           posts.forEach(post => {
             let postContainer = document.querySelector(container);
             let postElement = document.createElement('div');
-
             postElement.className = 'post';
             //console.log(post)
             //console.log(post.createdAt)
             postElement.innerHTML = `
               <h2>${post.title}</h2>
               <p>${post.content}</p>
+              <div class="tag-container">
+                ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
               <div class="meta">
                 <span>By ${post.author}</span> |
                 <span>${new Date(post.createdAt).toDateString()}</span>
@@ -94,6 +95,10 @@
               `;
             postContainer.appendChild(postElement);
 
+            if (post.tags) {
+              displayTags(post.tags, '.tag-container');
+            }
+            
             let editButton = document.createElement('button');
             editButton.textContent = 'Edit';
             editButton.className = 'edit';
@@ -122,6 +127,17 @@
       configureButtons(userDrafts);
 
     };
+
+    const displayTags = (postTags, tagContainer) => {
+      const container = document.querySelector(tagContainer);
+      postTags.forEach(tag => {
+        const tagElement = document.createElement('span');
+        tagElement.classList.add('tag');
+        tagElement.textContent = tag;
+        container.appendChild(tagElement);
+      });
+    }
+
 
     const configureButtons = async (postType) => {
       const editButtons = document.querySelectorAll('.edit');

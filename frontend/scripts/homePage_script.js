@@ -55,3 +55,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+const displayGreeting = async () => {
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    if (res.ok) {
+        const greeting = document.querySelector(".greeting");
+        greeting.textContent = `Hello, ${data.username}`;
+    } else {
+        return null;
+    }
+};
+displayGreeting();
+
+const getRole = async () => {
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    const link = document.querySelector(".dropdown-content a[href='/basic']");
+    const adminLink = document.getElementById("admin-link"); 
+    if (res.ok) {
+        if (data.role === "admin") {
+            adminLink.style.display = "block";
+        }
+    } else {
+        return null;
+    }
+};
+getRole();
