@@ -48,8 +48,7 @@
             <div class="post">
                 <h2><%= post.title %></h2>
                 <p><%= post.content %></p>
-                <label for="tags">Tags</label>
-                <br> <!-- Line break -->
+                <!--<label for="tags">Tags</label>-->
                 <div class="tag-container">
                     <% post.tags.forEach(tag => { %>
                         <span class="tag"><%= tag %></span>
@@ -63,32 +62,6 @@
         <% }) %>
     </div>
     <script type ="module" src="/scripts/homePage_script.js">
-        const displayGreeting = async () => {
-            const res = await fetch("/api/auth/currentUser");
-            const data = await res.json();
-            if (res.ok) {
-                const greeting = document.querySelector(".greeting");
-                greeting.textContent = `Hello, ${data.username}`;
-            } else {
-                return null;
-            }
-        };
-        displayGreeting();
-
-        const getRole = async () => {
-            const res = await fetch("/api/auth/currentUser");
-            const data = await res.json();
-            const link = document.querySelector(".dropdown-content a[href='/basic']");
-            const adminLink = document.getElementById("admin-link"); 
-            if (res.ok) {
-                if (data.role === "admin") {
-                    adminLink.style.display = "block";
-                }
-            } else {
-                return null;
-            }
-        };
-        getRole();
 
         const displayTags = (postTags, tagContainer) => {
             const container = document.querySelector(tagContainer);
@@ -130,7 +103,7 @@
                 });
             }
         });
-
+        
         import { stripHtmlTags } from './utils.js';
         // Assuming you have the content in a variable called postContent
         let postContent = "<p>This is a <strong>test</strong> post.</p>";
