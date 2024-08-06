@@ -62,6 +62,7 @@
             </div>
         <% }) %>
     </div>
+    <script type ="module" src="/scripts/homePage_script.js">
         const displayGreeting = async () => {
             const res = await fetch("/api/auth/currentUser");
             const data = await res.json();
