@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.title %></title>
+</head>
+<body>
+    <div class="container">
+        <div class="post">
+            <h1><%= post.title %></h1>
+            <p><%= post.content %></p>
+            <div class="meta">
+                <span>By <%= post.author %></span> |
+                <span><%= post.createdAt ? post.createdAt.toDateString() : 'Unknown Date' %></span>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+body {
+    background-color: #2B303A;
+    color: whitesmoke;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    background-color: #dad4db;
+    width: 80%;
+    max-width: 800px;
+    margin: 200px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
+}
+.post h1 {
+    color: #3d3d42;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+.post p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #000000;
+}
+.meta {
+    font-size: 0.9em;
+    color: #302f2f;
+    margin-top: 20px;
+}
+.meta span {
+    margin-right: 10px;
+}
+a {
+    color: #bdb5b5;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+</style>
+</html>

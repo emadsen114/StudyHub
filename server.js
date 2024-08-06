@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const path = require('path');
+const routes = require('./backend/routes/routes');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { readFile } = require('fs');
@@ -14,6 +15,8 @@ require('dotenv').config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/', routes);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.use(express.static(path.join(__dirname, 'backend')));
@@ -203,7 +206,6 @@ app.listen(3000, () => {
 })
     */
 
-const routes = require('./backend/routes/routes');
 
 app.use('/api', routes);
 
