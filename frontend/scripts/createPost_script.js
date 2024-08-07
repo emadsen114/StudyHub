@@ -112,7 +112,8 @@ document.querySelector("#save").addEventListener('click', async function() {
         description: descriptionContent,
         author: username,
         tags: tagContent,
-        draft: true
+        draft: true,
+        comments: "" // **NEW
     }
     console.log(newPost);
 
@@ -163,7 +164,8 @@ document.querySelector("#next").addEventListener('click', async function() {
         description: descriptionContent,
         author: username,
         tags: tagContent,
-        draft: true
+        draft: true,
+        comments: "" // **NEW
     }
     console.log(newPost);
 

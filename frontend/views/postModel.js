@@ -10,7 +10,8 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  draft: Boolean // set to true if the post is a draft, set to false when ready to publish
+  draft: Boolean, // set to true if the post is a draft, set to false when ready to publish
+  comments: String //**NEW */
 });
 
 module.exports = mongoose.model('Post', postSchema);
