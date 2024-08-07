@@ -99,6 +99,10 @@ function addComment(ev) {
         textBox.style.backgroundColor = "cornflowerblue";
         wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
         commentContainer.appendChild(wrapDiv);
+
+        replyButton.addEventListener('click', updatePost);
+        likeButton.addEventListener('click', updatePost);
+        deleteButton.addEventListener('click', updatePost);
     } else {
         wrapDiv = ev.target.parentElement;
         commentText = ev.target.parentElement.firstElementChild.value;
@@ -108,6 +112,7 @@ function addComment(ev) {
         wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
     }
     setOnLocalStorage();
+    updatePost();
 }
 
 function setOnLocalStorage () {
@@ -146,6 +151,38 @@ document.getElementById('allComments').addEventListener('click', function (e) {
         e.target.parentElement.remove();
     }
 });
+
+async function updatePost (){
+    
+        // const urlParams = new URLSearchParams(window.location.search);
+        const postID = window.location.pathname.split('/').pop(); // Extract postID from URL path
+        console.log(postID);
+
+        const response = await fetch(`/api/auth/getPost/${postID}`);
+        const post = await response.json();
+
+        // update Post object, call updatePost instead of createPost
+        try {
+            const res = await fetch(`/api/auth/updatePost/${postID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    comment: document.getElementById('allComments').innerHTML
+                })
+            });
+            const data = await res.json()
+            console.log(data);
+            if(res.status === 400 || res.status === 401){
+                return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+            }
+
+            // window.location.href = `homePage.html`;
+        } catch (error) {
+            console.log("Not working");
+        };
+    }
 
 </script>
 </html>
