@@ -11,6 +11,16 @@
    
     <div class="link-button">
         <a href="/" class="link-button">Landing Page</a>
+        <a href="/homePage" id="home-link" style="display: none;">Home</a>
+        <div class="dropdown" id="dropdown-link" style="display: none;">
+            <img src="/images/profile.png" class="logo dropdown-toggle" alt="Logo" style="border-radius: 10%;">
+            <div class="dropdown-content">
+                <h2 class="greeting"></h2>
+                <a href="/admin" id="admin-link" style="display: none;">Admin</a><br>
+                <a href="/basic">User</a><br> <!--Apply Admin Only from getUsers() once import error is resolved-->
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
         <a href="register" class="link-button">Sign Up</a>
         <a href="login" class="link-button">Log In</a>
     </div>
@@ -32,4 +42,48 @@
 
     
 </body>
+<script>
+    const displayGreeting = async () => {
+        const res = await fetch("/api/auth/currentUser");
+        const data = await res.json();
+        if (res.ok) {
+            const greeting = document.querySelector(".greeting");
+            greeting.textContent = `Hello, ${data.username}`;
+        } else {
+            return null;
+        }
+    };
+    displayGreeting();
+
+    const getRole = async () => {
+        const res = await fetch("/api/auth/currentUser");
+        const data = await res.json();
+        const link = document.querySelector(".dropdown-content a[href='/basic']");
+        const adminLink = document.getElementById("admin-link"); 
+        if (res.ok) {
+            if (data.role === "admin") {
+                adminLink.style.display = "block";
+            }
+        } else {
+            return null;
+        }
+    };
+    getRole();
+
+    const hideButtons = async () => {
+        try {
+            const res = await fetch('/api/auth/currentUser');
+            if (res.ok) {
+                document.querySelector('.link-button[href="register"]').style.display = 'none';
+                document.querySelector('.link-button[href="login"]').style.display = 'none';
+                document.querySelector('#home-link').style.display = 'inline';
+                document.querySelector('#dropdown-link').style.display = 'inline';
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    hideButtons();
+</script>
 </html>
