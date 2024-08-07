@@ -169,7 +169,7 @@ async function updatePost (){
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    comment: document.getElementById('allComments').innerHTML
+                    comments: document.getElementById('allComments').innerHTML
                 })
             });
             const data = await res.json()
