@@ -50,12 +50,12 @@
       } else {
         return null;
       }
-    };
+      };
 
-    // global variable for user posts
-    
+      // global variable for user posts
       let userPosts = [];
       let userDrafts = [];
+
       const getAllPosts = async () => {
         const res = await fetch("/api/auth/currentUser");
         const data = await res.json();
@@ -96,17 +96,17 @@
             postContainer.appendChild(postElement);
 
             if (post.tags) {
-              displayTags(post.tags, '.tag-container');
+              //displayTags(post.tags, '.tag-container');
             }
-            
+              
             let editButton = document.createElement('button');
             editButton.textContent = 'Edit';
-            editButton.className = 'edit';
+            editButton.className = post.draft ? 'draft-edit' : 'post-edit';
             postElement.appendChild(editButton);
 
             let deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
-            deleteButton.className = 'delete';
+            deleteButton.className = post.draft ? 'draft-delete' : 'post-delete';
             postElement.appendChild(deleteButton);
 
             if (post.draft === true) {
@@ -116,59 +116,56 @@
               postElement.appendChild(draft);
             }
 
-            });
+          });    
+        };
 
-          
+        displayPosts(userPosts, '.left-posts-container');
+        displayPosts(userDrafts, '.right-posts-container');
+        configureButtons(userPosts, '.post-edit', '.post-delete');
+        configureButtons(userDrafts, '.draft-edit', '.draft-delete');
+
       };
 
-      displayPosts(userPosts, '.left-posts-container');
-      displayPosts(userDrafts, '.right-posts-container');
-      configureButtons(userPosts);
-      configureButtons(userDrafts);
-
-    };
-
-    const displayTags = (postTags, tagContainer) => {
-      const container = document.querySelector(tagContainer);
-      postTags.forEach(tag => {
-        const tagElement = document.createElement('span');
-        tagElement.classList.add('tag');
-        tagElement.textContent = tag;
-        container.appendChild(tagElement);
-      });
-    }
-
-
-    const configureButtons = async (postType) => {
-      const editButtons = document.querySelectorAll('.edit');
-        editButtons.forEach((button, i) => {
-          button.addEventListener('click', async () => {
-            //console.log("Edit button clicked");
-            //console.log("postID: " + userPosts[i].id);
-            window.location.assign(`/editPost.html?id=${postType[i].id}`);
+      const displayTags = (postTags, tagContainer) => {
+        const container = document.querySelector(tagContainer);
+        postTags.forEach(tag => {
+          const tagElement = document.createElement('span');
+          tagElement.classList.add('tag');
+          tagElement.textContent = tag;
+          container.appendChild(tagElement);
         });
-      });
+      }
 
-      const deleteButtons = document.querySelectorAll('.delete');
-        deleteButtons.forEach((button, i) => {
-          button.addEventListener('click', async () => {
-            //console.log("Delete button clicked");
-            const res = await fetch(`/api/auth/deletePost/${postType[i].id}`, {
-              method: 'DELETE',
+
+      const configureButtons = async (postType, editClass, deleteClass) => {
+        const editButtons = document.querySelectorAll(editClass);
+          editButtons.forEach((button, i) => {
+            button.addEventListener('click', async () => {
+              //console.log("Edit button clicked");
+              window.location.assign(`/editPost.html?id=${postType[i].id}`);
             });
-            const data = await res.json();
-            location.assign('/basic');
-          });
-      });
-    } 
-      //console.log(userPosts);
-      // Remove the closing parenthesis
-      getAllPosts();
-      //configureButtons(userPosts);
-      //configureButtons(userDrafts); 
-      displayGreeting();
-      //getUsers()
-      
+        });
+
+        const deleteButtons = document.querySelectorAll(deleteClass);
+          deleteButtons.forEach((button, i) => {
+            button.addEventListener('click', async () => {
+              //console.log("Delete button clicked");
+              const res = await fetch(`/api/auth/deletePost/${postType[i].id}`, {
+                method: 'DELETE',
+              });
+              const data = await res.json();
+              location.assign('/basic');
+            });
+        });
+      } 
+        console.log(userPosts);
+        // Remove the closing parenthesis
+        getAllPosts();
+        //configureButtons(userPosts);
+        //configureButtons(userDrafts); 
+        displayGreeting();
+        //getUsers()
+        
     </script>
   </body>
 </html>
