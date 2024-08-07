@@ -68,8 +68,17 @@ a:hover {
 }
 </style>
 <script>
-    window.onload = function setTemplate() {
-    document.getElementById('allComments').innerHTML = localStorage.getItem('template');
+    window.onload = async function setTemplate() {
+        const postID = window.location.pathname.split('/').pop(); // Extract postID from URL path
+        //console.log(postID);
+        //console.log(document.getElementById('allComments').innerHTML);
+
+        const response = await fetch(`/api/auth/getPost/${postID}`);
+        const post = await response.json();
+        //console.log(post.post.comments);
+        document.getElementById('allComments').innerHTML = post.post.comments;
+
+        //document.getElementById('allComments').innerHTML = localStorage.getItem('template');
 };
 
 const commentContainer = document.getElementById('allComments');
@@ -157,6 +166,7 @@ async function updatePost (){
         // const urlParams = new URLSearchParams(window.location.search);
         const postID = window.location.pathname.split('/').pop(); // Extract postID from URL path
         console.log(postID);
+        console.log(document.getElementById('allComments').innerHTML);
 
         const response = await fetch(`/api/auth/getPost/${postID}`);
         const post = await response.json();
@@ -179,6 +189,7 @@ async function updatePost (){
             }
 
             // window.location.href = `homePage.html`;
+            console.log("Successfully updated comments!")
         } catch (error) {
             console.log("Not working");
         };
