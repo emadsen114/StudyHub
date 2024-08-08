@@ -120,3 +120,7 @@ h2 {
     cursor: pointer;
     margin-left: 5px;
   }
+
+  .post-link, .post-link:visited {
+    color:black;
+  }
