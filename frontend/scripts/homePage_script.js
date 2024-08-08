@@ -105,7 +105,8 @@ async function updateSaveList(e) {
     //console.log(updatedSaveList);
     //console.log(`/api/auth/updateSaveList/${userID}/${postID}`)
 
-    const res2 = await fetch(`/api/auth/updateSaveList/${userID}/${postID}`);
+    const add = true; // true if adding to saved list, false if removing from saved list
+    const res2 = await fetch(`/api/auth/updateSaveList/${userID}/${postID}/${add}`);
 
 
     console.log("post saved!")

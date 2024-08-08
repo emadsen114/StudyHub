@@ -332,6 +332,7 @@ exports.deletePost = async (req, res, next) => {
 exports.updateSaveList = async (req, res, next) => {
   const userId = req.params.id; // Get the userID from the route parameter
   const postId = req.params.postId; // Get the postId from the request body
+  const add = req.params.add === 'true' // Boolean, if true add the postId to the savedList, if false remove it
 
   try {
     const user = await User.findById(userId);
@@ -341,8 +342,11 @@ exports.updateSaveList = async (req, res, next) => {
 
     user.markModified('savedList'); // Mark the savedList as modified
     // Add the postId to the user's savedList
-    user.savedList.push(postId);
-
+    if (add) {
+      user.savedList.push(postId);
+    } else {
+      user.savedList = user.savedList.filter(id => id.toString() !== postId);
+    }
     // Save the updated user
     const updatedUser = await user.save();
 
