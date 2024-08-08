@@ -45,6 +45,7 @@
     <script type ="module" src="/scripts/homePage_script.js"></script>
     <div class="posts">
         <% posts.forEach(post => { %>
+           <a href="/post/<%= post._id %>" class="post-link">
             <div class="post">
                 <h2><%= post.title %></h2>
                 <p><%= post.content %></p>
@@ -59,6 +60,8 @@
                     <span><%= post.createdAt ? post.createdAt.toDateString() : 'Unknown Date' %></span>
                 </div>
             </div>
+        </a>
+    
         <% }) %>
     </div>
     <script type ="module" src="/scripts/homePage_script.js">

@@ -293,6 +293,13 @@ app.get('/', async (req, res) => {
     res.render('frontend/views/homePage', { posts });
 });
 
+app.get('/post/:id', (req, res) => {
+    const postId = req.params.id;
+    // Fetch the post from the database using postId
+    // Render the post page with the fetched data
+    res.render('postPage', { postId });
+});
+
 //search bar
 app.get('/search', async (req, res) => {
   const query = req.query.query.toLowerCase();
