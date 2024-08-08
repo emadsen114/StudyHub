@@ -18,6 +18,6 @@ router.route("/getPost/:id").get(getPost);
 router.route("/updatePost/:id").patch(updatePost);
 router.route("/getAllPosts").get(getAllPosts);
 router.route("/deletePost/:id").delete(deletePost);
-router.route("/updateSaveList/:id/:postId").get(updateSaveList);
+router.route("/updateSaveList/:id/:postId/:add").get(updateSaveList);
 
 module.exports = router
