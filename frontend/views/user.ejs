@@ -24,6 +24,10 @@
         <div class="right-posts-container">
           <p></p>
         </div>
+        <h2>Saved Posts</h2>
+        <div class="saved-posts-container">
+          <p></p>
+        </div>
       </div>
     </div>
     <script>
@@ -55,6 +59,7 @@
       // global variable for user posts
       let userPosts = [];
       let userDrafts = [];
+      let savedPosts = [];
 
       const getAllPosts = async () => {
         const res = await fetch("/api/auth/currentUser");
@@ -71,6 +76,10 @@
           }
           else if (post.author === currentUser) {
             userPosts.push(post);
+          }
+
+          if (data.savedList.includes(post.id)) {
+            savedPosts.push(post);
           }
         });
         console.log(userDrafts);
@@ -98,16 +107,18 @@
             if (post.tags) {
               //displayTags(post.tags, '.tag-container');
             }
-              
-            let editButton = document.createElement('button');
-            editButton.textContent = 'Edit';
-            editButton.className = post.draft ? 'draft-edit' : 'post-edit';
-            postElement.appendChild(editButton);
+            
+            if (!savedPosts.includes(post) || userPosts.includes(post) || userDrafts.includes(post)) {
+              let editButton = document.createElement('button');
+              editButton.textContent = 'Edit';
+              editButton.className = post.draft ? 'draft-edit' : 'post-edit';
+              postElement.appendChild(editButton);
 
-            let deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
-            deleteButton.className = post.draft ? 'draft-delete' : 'post-delete';
-            postElement.appendChild(deleteButton);
+              let deleteButton = document.createElement('button');
+              deleteButton.textContent = 'Delete';
+              deleteButton.className = post.draft ? 'draft-delete' : 'post-delete';
+              postElement.appendChild(deleteButton);
+            }
 
             if (post.draft === true) {
               let draft = document.createElement('span');
@@ -121,6 +132,7 @@
 
         displayPosts(userPosts, '.left-posts-container');
         displayPosts(userDrafts, '.right-posts-container');
+        displayPosts(savedPosts, '.saved-posts-container');
         configureButtons(userPosts, '.post-edit', '.post-delete');
         configureButtons(userDrafts, '.draft-edit', '.draft-delete');
 
