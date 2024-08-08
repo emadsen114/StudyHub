@@ -58,6 +58,7 @@
                 <div class="meta">
                     <span>By <%= post.author %></span> |
                     <span><%= post.createdAt ? post.createdAt.toDateString() : 'Unknown Date' %></span>
+                    <button class="save-post" data-id="<%= post._id %>">Save Post</button>
                 </div>
             </div>
         </a>
@@ -106,6 +107,8 @@
                 });
             }
         });
+
+
         
         import { stripHtmlTags } from './utils.js';
         // Assuming you have the content in a variable called postContent
