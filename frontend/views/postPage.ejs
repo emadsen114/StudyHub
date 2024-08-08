@@ -15,7 +15,7 @@
                 <span><%= post.createdAt ? post.createdAt.toDateString() : 'Unknown Date' %></span>
             </div>
             <div class="container">
-                <label for="comment" name="comment">ADD YOUR COMMENT BELOW-</label>
+                <label for="comment" name="comment">Comment-</label>
                 <textarea id="comment"></textarea>
                 <button id="addComments">Add</button>
                 <div id="allComments"></div>
@@ -105,7 +105,7 @@ function addComment(ev) {
         commentText = document.getElementById('comment').value;
         document.getElementById('comment').value = '';
         textBox.innerHTML = commentText;
-        textBox.style.backgroundColor = "cornflowerblue";
+        // textBox.style.backgroundColor = "cornflowerblue";
         wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
         commentContainer.appendChild(wrapDiv);
 
@@ -116,7 +116,7 @@ function addComment(ev) {
         wrapDiv = ev.target.parentElement;
         commentText = ev.target.parentElement.firstElementChild.value;
         textBox.innerHTML = commentText;
-        textBox.style.backgroundColor = "paleturquoise";
+        // textBox.style.backgroundColor = "paleturquoise";
         wrapDiv.innerHTML = '';
         wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
     }
