@@ -14,6 +14,7 @@ exports.register = async (req, res, next) => {
       await User.create({
         username,
         password: hash,
+        savedList: []
       })
         .then((user) => {
           const maxAge = 3 * 60 * 60;
@@ -189,6 +190,7 @@ exports.getUsers = async (req, res, next) => {
         container.username = user.username
         container.role = user.role
         container.id = user._id
+        container.savedList = user.savedList
         return container
       })
       res.status(200).json({ user: userFunction })
@@ -215,6 +217,7 @@ exports.currentUser = async (req, res, next) => {
             username: user.username,
             user: user._id,
             role: user.role,
+            savedList: user.savedList
           });
         }
       }
@@ -326,3 +329,25 @@ exports.deletePost = async (req, res, next) => {
     )
 }
 
+exports.updateSaveList = async (req, res, next) => {
+  const userId = req.params.id; // Get the userID from the route parameter
+  const postId = req.params.postId; // Get the postId from the request body
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.markModified('savedList'); // Mark the savedList as modified
+    // Add the postId to the user's savedList
+    user.savedList.push(postId);
+
+    // Save the updated user
+    const updatedUser = await user.save();
+
+    res.status(200).json({ message: 'Saved list updated successfully', updatedUser });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

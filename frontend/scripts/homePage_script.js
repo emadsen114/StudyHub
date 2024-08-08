@@ -82,3 +82,31 @@ const getRole = async () => {
     }
 };
 getRole();
+
+// save button for each post
+const saveButtons = document.querySelectorAll('.save-post');
+
+saveButtons.forEach(button => {
+    button.addEventListener('click', updateSaveList);
+});
+
+async function updateSaveList(e) {
+    console.log("button pressed!")
+    const res = await fetch("/api/auth/currentUser");
+    const data = await res.json();
+    //console.log(data);
+    const userID = data.user;
+    const postID = e.target.dataset.id;
+    //console.log(userID);
+    //console.log(postID);
+    //console.log(data.savedList);
+    const updatedSaveList = data.savedList
+    updatedSaveList.push(postID);
+    //console.log(updatedSaveList);
+    //console.log(`/api/auth/updateSaveList/${userID}/${postID}`)
+
+    const res2 = await fetch(`/api/auth/updateSaveList/${userID}/${postID}`);
+
+
+    console.log("post saved!")
+}

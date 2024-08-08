@@ -12,7 +12,7 @@ body {
 .container {
     background-color: white;
     width: 160vmin;
-    height: 90vmin;
+    min-height: 90vmin;
     padding: 50px 30px;
     position: absolute;
     overflow-y: auto;
@@ -28,10 +28,10 @@ body {
 .posts-container {
     background-color: white;
     width: 150vmin;
-    height: 60vmin;
+    height: 90vmin;
     padding: 50px 30px;
     position: absolute;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -20%);
     left: 50%;
     top: 50%;
     border-radius: 10px;
@@ -48,6 +48,13 @@ body {
 }
 
 .right-posts-container {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.saved-posts-container {
     width: 100%;
     overflow-x: auto;
     display: flex;
