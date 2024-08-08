@@ -121,7 +121,7 @@ function addComment(ev) {
         wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
     }
     //setOnLocalStorage();
-    //updatePost();
+    updatePost();
 }
 
 function setOnLocalStorage () {
@@ -152,17 +152,20 @@ document.getElementById('allComments').addEventListener('click', function (e) {
     } else if(hasClass(e.target, 'likeComment')) {
          const likeBtnValue = e.target.innerHTML;
          e.target.innerHTML = likeBtnValue !== 'Like' ? Number.parseInt(likeBtnValue) + 1 : 1;
-        setOnLocalStorage();
+        //setOnLocalStorage();
+        updatePost();
     } else if(hasClass(e.target, 'cancelReply')) {
         e.target.parentElement.innerHTML = '';
-        setOnLocalStorage();
+        //setOnLocalStorage();
+        updatePost();
     } else if(hasClass(e.target, 'deleteComment')) {
         e.target.parentElement.remove();
+        updatePost();
     }
 });
 
 async function updatePost (){
-    
+        console.log("Button Pressed")
         // const urlParams = new URLSearchParams(window.location.search);
         const postID = window.location.pathname.split('/').pop(); // Extract postID from URL path
         console.log(postID);
