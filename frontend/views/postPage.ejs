@@ -9,7 +9,7 @@
     <div class="container">
         <div class="post">
             <h1><%= post.title %></h1>
-            <p><%= post.content %></p>
+            <p><%- post.content %></p>
             <div class="meta">
                 <span>By <%= post.author %></span> |
                 <span><%= post.createdAt ? post.createdAt.toDateString() : 'Unknown Date' %></span>

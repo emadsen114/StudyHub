@@ -48,7 +48,7 @@
            <a href="/post/<%= post._id %>" class="post-link">
             <div class="post">
                 <h2><%= post.title %></h2>
-                <p><%= post.content %></p>
+                <p><%- post.content %></p>
                 <!--<label for="tags">Tags</label>-->
                 <div class="tag-container">
                     <% post.tags.forEach(tag => { %>
@@ -208,6 +208,9 @@ header nav {
     background-color: #fff;
     color: #000;
     padding: 20px;
+    overflow-y: auto;
+    max-height: 200px;
+    min-height: 200px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow */
 }
