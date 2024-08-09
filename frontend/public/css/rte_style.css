@@ -9,10 +9,10 @@
     margin: 0;
     background: linear-gradient(
       to right, 
-      #2B303A 0%,
-      #2B303A 42%,
-      #E8EDEC 42%,
-      #E8EDEC 100%
+      #283044 0%,
+      #283044 42%,
+      whitesmoke 42%,
+      whitesmoke 100%
     );
     background-repeat: no-repeat;
   }

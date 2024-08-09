@@ -18,10 +18,10 @@
         </a>
         <div style="display: flex; align-items: center; margin-left: auto;">
             <nav>
-                <a href="#">Subjects</a>
-                <a href="#">Trending</a>
-                <a href="/createPost.html">Post</a>
-                <a href="/aboutPage.html">About</a>
+                <a href="#" class="button-color">Subjects</a>
+                <a href="#" class="button-color">Trending</a>
+                <a href="/createPost.html" class="button-color">Post</a>
+                <a href="/aboutPage.html" class="button-color">About</a>
             </nav>
             <div class="dropdown">
                 <img src="/images/profile.png" class="logo dropdown-toggle" alt="Logo" style="border-radius: 50%;">
@@ -125,7 +125,7 @@
 </body>
 <style>
 body {
-    background-color: #2B303A;
+    background-color: #283044;
     color: #fff;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -303,8 +303,24 @@ nav a:hover {
 
   a {
     text-decoration: none;
-    color: inherit;
+    color: #78a1bb;
   }
+
+  .button-color{
+    background-color: #78a1bb;
+    align-items: center;
+  }
+  .button-color:hover{
+    background-color: #348aa7;
+  }
+
+  .logo-container{
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+  }
+
+ 
 
 </style>
 
