@@ -6,13 +6,13 @@
 }
 
 body {
-    background-color: #2B303A;
+    background-color: #283044;
 }
 
 .container {
-    background-color: white;
-    width: 160vmin;
-    min-height: 90vmin;
+    background-color: transpartent;
+    width: 100%;
+    height: 100%;
     padding: 50px 30px;
     position: absolute;
     overflow-y: auto;
@@ -26,16 +26,16 @@ body {
   }
 
 .posts-container {
-    background-color: white;
-    width: 150vmin;
+    background-color: transparent;
+    width: 90%;
     height: 90vmin;
     padding: 50px 30px;
     position: absolute;
-    transform: translate(-50%, -20%);
+    transform: translate(-50%, -42%);
     left: 50%;
     top: 50%;
     border-radius: 10px;
-    box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
+    /*box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);*/
     display: flex;
     flex-direction: column;
 }
@@ -44,6 +44,7 @@ body {
     width: 100%;
     overflow-x: auto;
     display: flex;
+    gap: 20px;
     flex-direction: row;
 }
 
@@ -51,6 +52,7 @@ body {
     width: 100%;
     overflow-x: auto;
     display: flex;
+    gap: 20px;
     flex-direction: row;
 }
 
@@ -58,6 +60,7 @@ body {
     width: 100%;
     overflow-x: auto;
     display: flex;
+    gap: 20px;
     flex-direction: row;
 }
 
@@ -71,7 +74,8 @@ body {
 
 .post {
     background-color: #fff;
-    min-width: 200px;
+    min-width: 250px;
+    max-width: 250px;
     color: #000;
     padding: 20px;
     max-height:200px;
@@ -89,7 +93,7 @@ button {
     background-color: #fff;
     color: #333;
     border: none;
-    padding: 10px;
+    padding: 10px 15px;
     cursor: pointer;
 }
 
@@ -98,7 +102,9 @@ button {
 }
 
 h2 {
+    margin-top: 20px;
     margin-bottom: 20px;
+    color: #78a1bb;
 }
 
 /* Tag Styling */
@@ -123,4 +129,22 @@ h2 {
 
   .post-link, .post-link:visited {
     color:black;
+  }
+
+  .greeting {
+    color: #78a1bb;
+  }
+
+  .logout, .home, .create-post {
+    background-color: #78a1bb;
+    align-items: center;
+  }
+
+  .logout:hover, .home:hover, .create-post:hover {
+    background-color: #348aa7;
+  }
+
+  a {
+    text-decoration: none;
+    color: whitesmoke;
   }
