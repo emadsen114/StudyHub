@@ -73,7 +73,7 @@ body {
 }
 
 .post {
-    background-color: #fff;
+    background-color: whitesmoke;
     min-width: 250px;
     max-width: 250px;
     color: #000;
@@ -89,13 +89,15 @@ body {
     color: #666;
 }
 
+/*
 button {
     background-color: #fff;
     color: #333;
     border: none;
-    padding: 10px 15px;
+    padding: 20px;
     cursor: pointer;
 }
+*/
 
 .draft {
     color: red;
@@ -132,19 +134,56 @@ h2 {
   }
 
   .greeting {
+    margin-right: 20px;
     color: #78a1bb;
+    align-self: flex-start;
+    align-items: flex-start;
+    font-size: 80px;
   }
 
   .logout, .home, .create-post {
     background-color: #78a1bb;
     align-items: center;
+    width: 100px;
   }
 
-  .logout:hover, .home:hover, .create-post:hover {
-    background-color: #348aa7;
+
+  nav a {
+    color: #f6f5f3; /* Change to your preferred color */
+    text-decoration: none; /* Removes underline */
+    padding: 20px;
+    width: 100px;
+    height: 60px;
+    background-color: #645466; /* Optional: adds background color */
+    border-radius: 5px; /* Optional: rounds corners */
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
   }
 
-  a {
-    text-decoration: none;
-    color: whitesmoke;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    gap: 20px;
   }
+  
+  nav a:hover {
+    background-color: #666;
+  }
+
+  .logout, .home, .create-post {
+    background-color: #78a1bb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 60px;
+  }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: flex-start;
+}
