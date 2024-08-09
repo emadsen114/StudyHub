@@ -5,13 +5,13 @@
   }
 
 body {
-    background-color:lightblue;
+    background-color:#283044;;
 }
 
 .container {
     background-color: white;
     width: 120vmin;
-    height: 90vmin;
+    min-height: 80vmin;
     padding: 50px 30px;
     position: absolute;
     transform: translate(-50%, -50%);
@@ -27,12 +27,18 @@ body {
     margin-bottom: 10px;
 }
 
+
 #content {
-    height: 100px;
+    height: 200px;
+    width: 90%;
+    resize: none;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    overflow: auto;
   }
 
 #description {
-    height: 150px;
+    height: 120px;
 
 }
 button {
@@ -53,3 +59,42 @@ button {
 #submit {
     margin-left: auto;
 }
+
+.input-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+  
+  .tag-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .remove-tag {
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  #date-label {
+    margin-top: 0px;
+    display: inline-block;
+    border: none;
+    width: 53%;
+  }
+
+  #author-label {
+    display: inline-block;
+    border: none;
+    width: 30%;
+  }
