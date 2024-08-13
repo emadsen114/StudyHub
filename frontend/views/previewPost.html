@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Post</title>
+    <!-- Stylesheet-->
+    <link rel="stylesheet" type="text/css" href="/css/previewPost.css"    />
+</head>
+<body>
+    <div class="container">
+        <h1>Preview Post</h1>
+        <p>Preview of the post created.</p>
+        <div class="panel">
+            <form>
+                <label for="content">Content</label><br>
+                <div id="content" readonly>Content</div><br>
+                <textarea id="author-label" readonly>Author</textarea>
+                <textarea id="date-label" readonly>Date</textarea><br>  
+                <label for="title">Title</label><br>
+                <textarea id="title" readonly>Title</textarea><br>
+                <label for="description">Description</label><br>
+                <textarea id="description" readonly>Description</textarea><br>
+                <label for="tags">Tags</label>
+                <br> <!-- Line break -->
+                <form autocomplete="off">
+                    <div class="tag-container">
+                    </div>
+                </form>
+            </form>
+        </div>
+        <div id="button-container">
+            <button id="back">Back</button>
+            <button id="submit">Submit</button>
+        </div>
+    </div>
+    <script src="/scripts/previewPost_script.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/user.css"    />
+    <title>User page</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="greeting"></h1>
+      <div class ="header" style="display: flex; align-items: center; margin-left: auto;">
+        <nav>
+          <a class="home" href="/homePage">Home</a>
+          <a class="create-post" href="/createPost.html">Create Post</a>
+          <a class="logout" href="/logout">Log Out</a>
+        </nav>
+      </div>
+      <div class="posts-container">
+        <h2>Your Posts</h2>
+        <div class="left-posts-container">
+          <p></p>
+        </div>
+        <h2>Your Drafts</h2>
+        <div class="right-posts-container">
+          <p></p>
+        </div>
+        <h2>Saved Posts</h2>
+        <div class="saved-posts-container">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <script>
+      // ** not currently used **
+      const ul = document.querySelector("ul")
+      const getUsers = async () => {
+        const res = await fetch("/api/auth/getUsers")
+        const data = await res.json()
+        data.user.map(mappedUser => {
+          if (mappedUser.username !== "admin") {
+            let li = `<li> <b>Username</b> => ${mappedUser.username} <br> <b>Role</b> => ${mappedUser.role} </li>`
+            ul.innerHTML += li
+          } else {
+            return null
+          }
+        })
+      }
+      const displayGreeting = async () => {
+      const res = await fetch("/api/auth/currentUser");
+      const data = await res.json();
+      if (res.ok) {
+        const greeting = document.querySelector(".greeting");
+        greeting.textContent = `${data.username}'s Profile`;
+      } else {
+        return null;
+      }
+      };
+
+      // global variable for user posts
+      let userPosts = [];
+      let userDrafts = [];
+      let savedPosts = [];
+
+      const getAllPosts = async () => {
+        const res = await fetch("/api/auth/currentUser");
+        const data = await res.json();
+        const currentUser = data.username;
+        console.log(currentUser);
+        const res2 = await fetch("/api/auth/getAllPosts");
+        const data2 = await res2.json();
+        //console.log(data2.post);
+        data2.post.map(post => {
+          //console.log(post)
+          if (post.author === currentUser && post.draft === true) {
+            userDrafts.push(post);
+          }
+          else if (post.author === currentUser) {
+            userPosts.push(post);
+          }
+          else if (data.savedList.includes(post.id)) {
+            savedPosts.push(post);
+          }
+        });
+        console.log(userDrafts);
+        const p = document.querySelector('p');
+
+        const displayPosts = (posts, container) => {
+          posts.forEach(post => {
+            let postContainer = document.querySelector(container);
+            let postElement = document.createElement('div');
+            postElement.className = 'post';
+            //console.log(post)
+            //console.log(post.createdAt)
+            postElement.innerHTML = `
+              <h2><a href="/post/${post.id}" class="post-link">${post.title}</a></h2>
+              <p>${post.content}</p>
+              <div class="tag-container">
+                ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+              <div class="meta">
+                <span>By ${post.author}</span> |
+                <span>${new Date(post.createdAt).toDateString()}</span>
+              </div>
+              `;
+            postContainer.appendChild(postElement);
+
+            if (post.tags) {
+              //displayTags(post.tags, '.tag-container');
+            }
+            
+            if (!savedPosts.includes(post) || userPosts.includes(post) || userDrafts.includes(post)) {
+              let editButton = document.createElement('button');
+              editButton.textContent = 'Edit';
+              editButton.className = post.draft ? 'draft-edit' : 'post-edit';
+              postElement.appendChild(editButton);
+
+              let deleteButton = document.createElement('button');
+              deleteButton.textContent = 'Delete';
+              deleteButton.className = post.draft ? 'draft-delete' : 'post-delete';
+              postElement.appendChild(deleteButton);
+            }
+
+            if (post.draft === true) {
+              let draft = document.createElement('span');
+              draft.textContent = '[DRAFT - Post is only visible to you]';
+              draft.className = 'draft';
+              postElement.appendChild(draft);
+            }
+
+            if (savedPosts.includes(post) || data.savedList.includes(post.id)) {
+              let removeButton = document.createElement('button');
+              removeButton.textContent = 'Remove from Saved';
+              removeButton.className = 'remove-post';
+              postElement.appendChild(removeButton);
+            }
+
+          });    
+        };
+
+        displayPosts(userPosts, '.left-posts-container');
+        displayPosts(userDrafts, '.right-posts-container');
+        displayPosts(savedPosts, '.saved-posts-container');
+        configureButtons(userPosts, '.post-edit', '.post-delete');
+        configureButtons(userDrafts, '.draft-edit', '.draft-delete');
+        configureSaveButtons(data.savedList, data.user, false);
+
+      };
+
+      const displayTags = (postTags, tagContainer) => {
+        const container = document.querySelector(tagContainer);
+        postTags.forEach(tag => {
+          const tagElement = document.createElement('span');
+          tagElement.classList.add('tag');
+          tagElement.textContent = tag;
+          container.appendChild(tagElement);
+        });
+      }
+
+
+      const configureButtons = async (postType, editClass, deleteClass) => {
+        const editButtons = document.querySelectorAll(editClass);
+          editButtons.forEach((button, i) => {
+            button.addEventListener('click', async () => {
+              //console.log("Edit button clicked");
+              window.location.assign(`/editPost.html?id=${postType[i].id}`);
+            });
+        });
+
+        const deleteButtons = document.querySelectorAll(deleteClass);
+          deleteButtons.forEach((button, i) => {
+            button.addEventListener('click', async () => {
+              //console.log("Delete button clicked");
+              const res = await fetch(`/api/auth/deletePost/${postType[i].id}`, {
+                method: 'DELETE',
+              });
+              const data = await res.json();
+              location.assign('/basic');
+            });
+        });
+      }
+      
+      configureSaveButtons = async (postType, userID, add) => {
+        const removeButton = document.querySelectorAll('.remove-post');
+        removeButton.forEach((button, i) => {
+          button.addEventListener('click', async () => {
+            console.log(postType[i]);
+            const res = await fetch(`/api/auth/updateSaveList/${userID}/${postType[i]}/${add}`);
+            location.assign('/basic');
+            });
+        });
+      };
+        //console.log(userPosts);
+        // Remove the closing parenthesis
+        getAllPosts();
+        //configureButtons(userPosts);
+        //configureButtons(userDrafts); 
+        displayGreeting();
+        //getUsers()
+        
+    </script>
+  </body>
+</html>
