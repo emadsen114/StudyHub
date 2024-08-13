@@ -37,15 +37,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend/views'));
 
 // Route to fetch and display posts on the homepage
-<<<<<<< HEAD
-app.get('/homePage.html', async (request, response) => {
-  try {
-    const posts = await Post.find().sort({ createdAt: -1 }); // find( {draft: false}) **ADD this later**
-=======
 app.get('/homePage', async (request, response) => {
   try {
     const posts = await Post.find({draft: false}).sort({ createdAt: -1 }); // find( {draft: false}) **ADD this later**
->>>>>>> 97bc39d5258b6a2a85683a77793bbcf0d2e5f274
     response.render('homePage', { posts });
   } catch (err) {
     console.error('Error fetching posts:', err);
