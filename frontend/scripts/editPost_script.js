@@ -294,7 +294,11 @@ const displayGreeting = async () => {
     const data = await res.json();
     if (res.ok) {
         const greeting = document.querySelector(".greeting");
+<<<<<<< HEAD
         greeting.textContent = `Editing post for ${data.username}`;
+=======
+        greeting.textContent = `Editing Post for ${data.username}`;
+>>>>>>> 97bc39d5258b6a2a85683a77793bbcf0d2e5f274
         console.log("message printed")
     } else {
         return null;
