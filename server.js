@@ -89,7 +89,12 @@ app.listen(PORT, () => {
 const connectDB = require("./backend/config/database");
 connectDB();
 
+// logic for deploying to live server, **When deploying be sure to add ENVIRONMENT VARIABLES**
 const mongoString = process.env.DATABASE_URL;
+if (process.env.PUBLIC === "TRUE") {
+  mongoString = process.env.DATABASE_URL_PUBLIC;
+}
+
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
@@ -103,7 +108,7 @@ database.once('connected', () => {
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
-mongoose.connect('mongodb+srv://studyhubsose:team25SOSE@studyhub.3lizww3.mongodb.net/?retryWrites=true&w=majority&appName=StudyHub', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoString, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB...', err));
   
