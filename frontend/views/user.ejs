@@ -95,6 +95,7 @@
             //console.log(post.createdAt)
             postElement.innerHTML = `
               <h2><a href="/post/${post.id}" class="post-link">${post.title}</a></h2>
+              <p><strong>Description:</strong> ${post.description}</p><hr><br>
               <p>${post.content}</p>
               <div class="tag-container">
                 ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}

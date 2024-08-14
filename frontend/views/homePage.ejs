@@ -48,6 +48,7 @@
            <a href="/post/<%= post._id %>" class="post-link">
             <div class="post">
                 <h2><%= post.title %></h2>
+                <p><strong>Description:</strong> <%- post.description %></p><hr>
                 <p><%- post.content %></p>
                 <!--<label for="tags">Tags</label>-->
                 <div class="tag-container">
