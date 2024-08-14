@@ -89,7 +89,7 @@ app.listen(PORT, () => {
 const connectDB = require("./backend/config/database");
 connectDB();
 
-// logic for deploying to live server, *When deploying be sure to add ENVIRONMENT VARIABLES*
+// logic for deploying to live server, **When deploying be sure to add ENVIRONMENT VARIABLES**
 const mongoString = process.env.DATABASE_URL;
 if (process.env.PUBLIC === "TRUE") {
   mongoString = process.env.DATABASE_URL_PUBLIC;
