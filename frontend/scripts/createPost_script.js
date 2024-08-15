@@ -131,7 +131,7 @@ document.querySelector("#save").addEventListener('click', async function() {
             return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
         }
 
-        window.location.href = `homePage.html`;
+        window.location.href = `homePage`;
     } catch (err) {
         console.log("Not working")
     }

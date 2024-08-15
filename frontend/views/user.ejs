@@ -67,7 +67,7 @@
         const res = await fetch("/api/auth/currentUser");
         const data = await res.json();
         const currentUser = data.username;
-        console.log(currentUser);
+        //console.log(currentUser);
         const res2 = await fetch("/api/auth/getAllPosts");
         const data2 = await res2.json();
         //console.log(data2.post);
@@ -83,7 +83,7 @@
             savedPosts.push(post);
           }
         });
-        console.log(userDrafts);
+        //console.log(userDrafts);
         const p = document.querySelector('p');
 
         const displayPosts = (posts, container) => {
@@ -145,6 +145,8 @@
         configureButtons(userPosts, '.post-edit', '.post-delete');
         configureButtons(userDrafts, '.draft-edit', '.draft-delete');
         configureSaveButtons(data.savedList, data.user, false);
+        console.log("savedPosts: ", savedPosts);
+        console.log("data.savedList: ", data.savedList);
 
       };
 

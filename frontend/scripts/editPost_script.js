@@ -100,7 +100,7 @@ document.querySelector("#save").addEventListener('click', async function() {
             if(res.status === 400 || res.status === 401){
                 return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
             }
-            window.location.href = `homePage.html`;
+            window.location.href = `homePage`;
         } catch (error) {
             console.log("Not working");
         };
