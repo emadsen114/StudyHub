@@ -11,6 +11,10 @@ body {
     color: whitesmoke;
     cursor: pointer;
     padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    
 }
 
 #home-link {
