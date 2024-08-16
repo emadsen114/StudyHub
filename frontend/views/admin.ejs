@@ -11,11 +11,38 @@
   <body>
     <div class="display" style="background-color: red;"></div>
     <div class="container">
-      <h1>Users</h1>
-      <h2 class="greeting"></h2>
-      <ul></ul>
-      <button class = "button" class="logout"><a href="/logout">Log Out</a></button>
-      <button class="home"><a href="/homePage">Home</a></button>
+      <div>
+        <h2 class="greeting"></h2>
+      </div>
+      <div class ="header" style="display: flex; align-items: center; margin-left: auto;">
+        <nav>
+          <a href="/basic" class="user-page-link">User Page</a>
+          <a class="home" href="/homePage">Home</a>
+          <a class="create-post" href="/createPost.html">Create Post</a>
+          <a class="logout" href="/logout">Log Out</a>
+        </nav>
+      </div>
+      <div class="users-container">
+        <div class="users">
+          <h2>Active Basic Users</h2>
+          <div class="users-list">
+            <ul></ul>
+          </div>
+        </div>
+        <div class="admins">
+          <h2>Admins</h2>
+          <div class="admins-list">
+            <ul class=""></ul>
+          </div>
+        </div>
+        <div class="instructions">
+          <h2>Instructions</h2>
+          <div class="instructions-list">
+            <p>Click on the "Edit Role" button to promote a user to admin.</p><br>
+            <p>Click on the "Delete User" button to delete a user.</p><br>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
       const displayGreeting = async () => {
@@ -23,7 +50,7 @@
       const data = await res.json();
       if (res.ok) {
         const greeting = document.querySelector(".greeting");
-        greeting.textContent = `Hello, ${data.username}`;
+        greeting.textContent = `${data.username}'s Admin Dashboard`;
       } else {
         return null;
       }
@@ -41,7 +68,7 @@
       console.log(nonAdminUsers[0].username);
       nonAdminUsers.map((mappedUser) => {
         if(mappedUser){
-          let li = `<li> <b>Username</b> => ${mappedUser.username} <br> <b>Role</b> => ${mappedUser.role} </li> <button class="edit">Edit Role</button> <button class="delete">Delete User</button>`
+          let li = `<li> <b>Username</b>: ${mappedUser.username} <br> <b>Role</b>: ${mappedUser.role} </li> <button class="edit">Edit Role</button> <button class="delete">Delete User</button><hr>`
           ul.innerHTML += li
         }else{
           return null
@@ -90,7 +117,23 @@
           })
         })
     }
+    const getAdmins = async () => {
+      const res = await fetch('/api/auth/getUsers')
+      const data = await res.json()
+      const adminUsers = data.user.filter(mappedUser => mappedUser.role === 'admin');
+      const ulAdmin = document.querySelector('.admins ul')
+      adminUsers.map((mappedUser) => {
+        if(mappedUser){
+          let li = `<li> <b>Username</b>: ${mappedUser.username} <br> <b>Role</b>: ${mappedUser.role} </li><hr>`
+          ulAdmin.innerHTML += li
+        }else{
+          return null
+        }
+      });
+    }
+
     getUsers()
+    getAdmins();
     </script>
   </body>
 </html>

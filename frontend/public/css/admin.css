@@ -1,38 +1,139 @@
-body {
-    background-color: #2c2c2c;
-    color: whitesmoke;
-    text-align: right;
-    font-size: 15px;
+* {
+    padding: 0;
     margin: 0;
+    box-sizing: border-box;
+  
 }
 
-button {
-    background-color: #fff;
-    color: #333;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+body {
+    background-color: #283044;
 }
 
 .container {
+    background-color: transpartent;
+    width: 100%;
+    height: 100%;
+    padding: 50px 30px;
+    position: absolute;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
     display: flex;
-    flex-direction: column; 
+    flex-direction: row;
+  }
+
+.users-container {
+    margin-top: 30px;
+    background-color: transparent;
+    width: 90%;
+    height: 90vmin;
+    padding: 50px 30px;
+    position: absolute;
+    transform: translate(-50%, -42%);
+    left: 50%;
+    top: 50%;
+    border-radius: 10px;
+    /*box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);*/
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 200px;
+}
+
+.users-container li {
+    list-style-type: none;
+}
+
+.users-container h2 {
+    color: whitesmoke;
+    text-align: center;
+}
+
+.users-container .users, .users-container .admins, .users-container .instructions {
+    background-color: #78a1bb;
+    border-radius: 5px;
+    width: 25%;
+    height: 75%;
+}
+
+.users .users-list, .admins .admins-list, .instructions .instructions-list {
+    background-color: whitesmoke;
+    overflow-y: auto;
+    height: 88%;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #78a1bb;
+}
+
+  .greeting {
+    margin-right: 20px;
+    color: #78a1bb;
+    align-self: flex-start;
+    align-items: flex-start;
+    font-size: 70px;
+    white-space: nowrap;
+  }
+  
+
+  .logout, .home, .create-post, .user-page-link {
+    background-color: #78a1bb;
     align-items: center;
-    height: 100vh; 
+    width: 100px;
+  }
 
-}
 
-a {
-    text-decoration: none;
-}
+  nav a {
+    color: #f6f5f3; /* Change to your preferred color */
+    text-decoration: none; /* Removes underline */
+    padding: 20px;
+    width: 100px;
+    height: 60px;
+    border-radius: 5px; /* Optional: rounds corners */
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+  }
 
-ul{
-    float: none; /* Reset any floating if applied */
-    position: static;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    gap: 20px;
+  }
+  
+  nav a:hover {
+    background-color: #666;
+  }
+
+  .logout, .home, .create-post, .user-page-link {
+    background-color: #78a1bb;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    width: 100px;
+    height: 60px;
+  }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: flex-start;
 }
 
-li {
-    margin:0%;
-    text-align: left;
+ul b {
+    font-size: 20px;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
